@@ -19,7 +19,8 @@
                     </div>
                     <div class="form-group">
                         <label for="date">Event Date</label>
-                        <input type="datetime-local" class="form-control" name="date" id="date" value="{{ $event->date->format('Y-m-d\TH:i') }}" required>
+                        <input type="datetime-local" class="form-control" name="date" id="date" 
+                               value="{{ \Carbon\Carbon::parse($event->date)->format('Y-m-d\TH:i') }}" required>
                     </div>
                     <div class="form-group">
                         <label for="description">Description</label>

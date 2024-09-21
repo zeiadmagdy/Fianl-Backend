@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use \App\Http\Controllers\AdminController;
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\Admin\EventController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\DashboardController;
@@ -22,30 +22,17 @@ Route::get('/', function () {
 });
 
 Route::get('/admin/login', [AdminController::class, 'showLoginForm']);
+Route::post('/admin/login', [AdminController::class, 'login']);
 
-Route::post('admin/login', [AdminController::class, 'login']);
-
-Route::middleware('admin')->group(function() {
-
-    Route::get('admin/dashboard', [AdminController::class, 'dashboard']);
-});
-
-Route::get('admin/users', [AdminController::class, 'users']);
-
-Route::delete('admin/users/{id}', [AdminController::class, 'deleteUser']);
-
-Route::get('/admin/login', function () {
-    return view('admin.login');
-})->name('admin.login');
-
-Route::get('/admin/dashboard', [App\Http\Controllers\DashboardController::class, 'index'])->name('admin.dashboard');
-
-Route::resource('admin/events', EventController::class);
-Route::prefix('admin')->name('admin.')->group(function () {
-    Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
+// Protect routes with 'admin' middleware
+Route::middleware('admin')->prefix('admin')->name('admin.')->group(function () {
     
+    // Dashboard route
+    Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
+
+    // User routes (resource)
     Route::resource('users', UserController::class);
 
-    // Event routes
+    // Event routes (resource)
     Route::resource('events', EventController::class);
 });

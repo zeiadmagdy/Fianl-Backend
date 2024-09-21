@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
-use Illuminate\Http\Request;
+use App\Http\Requests\UserRequest; // Using UserRequest for validation
 use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
@@ -23,14 +23,9 @@ class UserController extends Controller
     }
 
     // Store a newly created user
-    public function store(Request $request)
+    public function store(UserRequest $request)
     {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:8|confirmed',
-        ]);
-
+        // Create user with validated data
         User::create([
             'name' => $request->name,
             'email' => $request->email,
@@ -40,12 +35,6 @@ class UserController extends Controller
         return redirect()->route('admin.users.index')->with('success', 'User created successfully.');
     }
 
-    // Display the specified user
-    public function show(User $user)
-    {
-        return view('admin.users.show', compact('user'));
-    }
-
     // Show the form for editing the specified user
     public function edit(User $user)
     {
@@ -53,14 +42,9 @@ class UserController extends Controller
     }
 
     // Update the specified user
-    public function update(Request $request, User $user)
+    public function update(UserRequest $request, User $user)
     {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users,email,' . $user->id,
-            'password' => 'nullable|string|min:8|confirmed',
-        ]);
-
+        // Update user with validated data
         $user->name = $request->name;
         $user->email = $request->email;
 

@@ -17,22 +17,24 @@ use App\Http\Controllers\DashboardController;
 |
 */
 
+// Display login page
 Route::get('/', function () {
     return view('admin.login');
 });
 
-Route::get('/admin/login', [AdminController::class, 'showLoginForm']);
-Route::post('/admin/login', [AdminController::class, 'login']);
+// Admin login routes
+Route::get('/admin/login', [AdminController::class, 'showLoginForm'])->name('admin.login');
+Route::post('/admin/login', [AdminController::class, 'login'])->name('admin.login.post');
 
 // Protect routes with 'admin' middleware
 Route::middleware('admin')->prefix('admin')->name('admin.')->group(function () {
-    
+
     // Dashboard route
     Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
-    // User routes (resource)
+    // User routes (resourceful)
     Route::resource('users', UserController::class);
 
-    // Event routes (resource)
+    // Event routes (resourceful)
     Route::resource('events', EventController::class);
 });

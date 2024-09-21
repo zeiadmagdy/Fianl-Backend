@@ -23,8 +23,8 @@
             <!-- small box -->
             <div class="small-box bg-success">
                 <div class="inner">
-                    <h3>53%</h3>
-                    <p>Bounce Rate</p>
+                    <h3>{{ $eventCount }}</h3>
+                    <p>Total Events</p>
                 </div>
                 <div class="icon">
                     <i class="fas fa-chart-line"></i>

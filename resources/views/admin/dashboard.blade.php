@@ -5,7 +5,7 @@
 @section('content')
 <div class="row">
     <!-- Small boxes (Stat box) -->
-    <div class="col-lg-4 col-6">
+    <div class="col-lg-3 col-6">
         <!-- small box -->
         <div class="small-box bg-success">
             <div class="inner">
@@ -21,7 +21,7 @@
         </div>
     </div>
     <!-- ./col -->
-    <div class="col-lg-4 col-6">
+    <div class="col-lg-3 col-6">
         <!-- small box -->
         <div class="small-box bg-warning">
             <div class="inner">

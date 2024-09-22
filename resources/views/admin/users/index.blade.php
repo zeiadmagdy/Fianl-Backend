@@ -3,13 +3,14 @@
 @section('title', 'Users')
 
 @section('content')
-<a href="{{ route('admin.users.create') }}" class="btn btn-primary">Add User</a>
+<a href="{{ route('admin.users.create') }}" class="btn btn-primary mb-3">Add User</a>
 
 <!-- Table to list users -->
 <table class="table">
     <thead>
         <tr>
             <th>ID</th>
+            <th>Profile Image</th> <!-- Add this -->
             <th>Name</th>
             <th>Email</th>
             <th>Actions</th>
@@ -19,6 +20,13 @@
         @foreach ($users as $user)
             <tr>
                 <td>{{ $user->id }}</td>
+                <td>
+                    @if($user->profile_image)
+                        <img src="{{ $user->profile_image }}" alt="Profile Image" width="50">
+                    @else
+                        No Image
+                    @endif
+                </td>
                 <td>{{ $user->name }}</td>
                 <td>{{ $user->email }}</td>
                 <td>

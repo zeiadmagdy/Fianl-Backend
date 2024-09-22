@@ -4,64 +4,82 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Event;
+use App\Models\Categories;  // Include the Categories model
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class EventController extends Controller
 {
     public function index()
     {
-        $events = Event::all();
+        $events = Event::with('category')->get(); 
         return view('admin.events.index', compact('events'));
     }
 
     public function create()
     {
-        return view('admin.events.create');
+        $categories = Categories::all();  
+        return view('admin.events.create', compact('categories'));
     }
 
     public function store(Request $request)
     {
-        // Validate request data
         $validatedData = $request->validate([
             'name' => 'required|string|max:255',
-            'date' => 'required|date_format:Y-m-d\TH:i',  // Ensure date format
+            'date' => 'required|date_format:Y-m-d\TH:i',
             'description' => 'nullable|string',
+            'capacity' => 'nullable|integer',
+            'location' => 'nullable|string|max:255',
+            'event_image' => 'nullable|image|max:2048',
+            'categories_id' => 'required|exists:categories,id',
         ]);
 
-        // Create event with validated data
         Event::create($validatedData);
 
-        // Redirect with success message
         return redirect()->route('admin.events.index')->with('success', 'Event created successfully.');
     }
 
     public function edit(Event $event)
     {
-        return view('admin.events.edit', compact('event'));
+        $categories = Categories::all();  
+        return view('admin.events.edit', compact('event', 'categories'));
     }
 
     public function update(Request $request, Event $event)
     {
-        // Validate request data
         $validatedData = $request->validate([
             'name' => 'required|string|max:255',
             'date' => 'required|date_format:Y-m-d\TH:i',
             'description' => 'nullable|string',
+            'capacity' => 'nullable|integer',
+            'location' => 'nullable|string|max:255',
+            'event_image' => 'nullable|image|max:2048',
+            'categories_id' => 'required|exists:categories,id',
         ]);
 
-        // Update event with validated data
         $event->update($validatedData);
 
-        // Redirect with success message
         return redirect()->route('admin.events.index')->with('success', 'Event updated successfully.');
     }
 
     public function destroy(Event $event)
     {
-        // Delete event
         $event->delete();
 
-        // Redirect with success message
         return redirect()->route('admin.events.index')->with('success', 'Event deleted successfully.');
+    }
+
+    public function attendEvent(Request $request, $eventId)
+    {
+        $event = Event::findOrFail($eventId);
+        $user = Auth::user();
+
+        if ($event->attendees()->where('user_id', $user->id)->exists()) {
+            $event->attendees()->detach($user->id);
+            return response()->json(['message' => 'You have successfully left the event.'], 200);
+        } else {
+            $event->attendees()->attach($user->id);
+            return response()->json(['message' => 'You are now attending the event.'], 200);
+        }
     }
 }

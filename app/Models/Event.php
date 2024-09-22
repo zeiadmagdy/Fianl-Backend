@@ -9,17 +9,41 @@ class Event extends Model
 {
     use HasFactory;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<int, string>
-     */
+    // Define the table name if it is not the default 'events'
+    protected $table = 'events';
+
+    // Allow mass assignment on these fields
     protected $fillable = [
         'name',
-        'description',
         'date',
+        'description',
+        'capacity',
         'location',
-        // other attributes you want to be mass assignable
+        'event_image',
+        'categories_id', // Foreign key to categories table
     ];
-}
 
+    /**
+     * Define a relationship where an event belongs to a category.
+     */
+    public function category()
+    {
+        return $this->belongsTo(Categories::class, 'categories_id'); // Use 'categories_id' as the foreign key
+    }
+
+    /**
+     * Define a relationship where an event belongs to a user (creator).
+     */
+    public function creator()
+    {
+        return $this->belongsTo(User::class, 'users_id'); // Use 'users_id' as the foreign key
+    }
+
+    /**
+     * Define a relationship where an event can have many attendees (users).
+     */
+    public function attendees()
+    {
+        return $this->belongsToMany(User::class, 'events_users'); // Use 'users_events' as the pivot table
+    }
+}

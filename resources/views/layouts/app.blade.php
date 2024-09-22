@@ -17,12 +17,14 @@
 ])
 </head>
 
-<body class="hold-transition sidebar-mini">
+<body class="hold-transition">
     <div class="wrapper">
-        @include('partials.navbar')
-        <!-- @include('partials.sidebar') -->
+        <!-- @include('partials.navbar') -->
+        <aside class="main-sidebar sidebar-dark-primary elevation-4" >
+            @include('partials.sidebar')
+        </aside>
 
-        <div class="content-wrapper">
+        <div class="content-wrapper p-4">
             <section class="content">
                 <div class="container-fluid">
                     @yield('content')
@@ -40,5 +42,5 @@
     'node_modules/admin-lte/dist/js/adminlte.min.js',
 ])
 </body>
-
 </html>
+

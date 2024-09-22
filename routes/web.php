@@ -5,6 +5,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\Admin\EventController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\Admin\CategoryController;
 
 /*
 |--------------------------------------------------------------------------
@@ -37,4 +38,8 @@ Route::middleware('admin')->prefix('admin')->name('admin.')->group(function () {
 
     // Event routes (resourceful)
     Route::resource('events', EventController::class);
+
+    Route::resource('categories', CategoryController::class);
+
 });
+

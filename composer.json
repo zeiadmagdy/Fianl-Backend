@@ -6,6 +6,9 @@
     "license": "MIT",
     "require": {
         "php": "^8.0.2",
+        "carbonphp/carbon-doctrine-types": "^2.0",
+        "cloudinary-labs/cloudinary-laravel": "^2.1",
+        "doctrine/dbal": "^3.0",
         "guzzlehttp/guzzle": "^7.2",
         "laravel/framework": "^9.19",
         "laravel/sanctum": "^3.0",

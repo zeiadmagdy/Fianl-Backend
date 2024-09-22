@@ -4,50 +4,61 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
-use App\Http\Requests\UserRequest; // Using UserRequest for validation
+use App\Http\Requests\UserRequest;
 use Illuminate\Support\Facades\Hash;
+use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary; // Import Cloudinary
 
 class UserController extends Controller
 {
-    // Display a listing of users
     public function index()
     {
         $users = User::all();
         return view('admin.users.index', compact('users'));
     }
 
-    // Show the form for creating a new user
     public function create()
     {
         return view('admin.users.create');
     }
 
-    // Store a newly created user
     public function store(UserRequest $request)
     {
-        // Create user with validated data
+        // Handle file upload to Cloudinary
+        $profile_image_url = null;
+        if ($request->hasFile('profile_image')) {
+            $uploadedFileUrl = Cloudinary::upload($request->file('profile_image')->getRealPath())->getSecurePath();
+            $profile_image_url = $uploadedFileUrl;
+        }
+
         User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
+            'profile_image' => $profile_image_url, // Store profile image URL
         ]);
 
         return redirect()->route('admin.users.index')->with('success', 'User created successfully.');
     }
 
-    // Show the form for editing the specified user
     public function edit(User $user)
     {
         return view('admin.users.edit', compact('user'));
     }
 
-    // Update the specified user
     public function update(UserRequest $request, User $user)
     {
-        // Update user with validated data
+        if ($request->hasFile('profile_image')) {
+            // Delete previous image if any
+            if ($user->profile_image) {
+                Cloudinary::destroy($user->profile_image); // Assumes Cloudinary public ID stored
+            }
+            // Upload new image
+            $uploadedFileUrl = Cloudinary::upload($request->file('profile_image')->getRealPath())->getSecurePath();
+            $user->profile_image = $uploadedFileUrl;
+        }
+
         $user->name = $request->name;
         $user->email = $request->email;
-
         if ($request->filled('password')) {
             $user->password = Hash::make($request->password);
         }
@@ -57,9 +68,11 @@ class UserController extends Controller
         return redirect()->route('admin.users.index')->with('success', 'User updated successfully.');
     }
 
-    // Remove the specified user
     public function destroy(User $user)
     {
+        if ($user->profile_image) {
+            Cloudinary::destroy($user->profile_image); // Assumes Cloudinary public ID stored
+        }
         $user->delete();
         return redirect()->route('admin.users.index')->with('success', 'User deleted successfully.');
     }

@@ -5,7 +5,7 @@
 @section('content')
 <h1>Edit User</h1>
 
-<form action="{{ route('admin.users.update', $user) }}" method="POST">
+<form action="{{ route('admin.users.update', $user) }}" method="POST" enctype="multipart/form-data"> <!-- Add enctype -->
     @csrf
     @method('PUT')
     <div class="mb-3">
@@ -21,9 +21,15 @@
         <input type="password" class="form-control" id="password" name="password">
     </div>
     <div class="mb-3">
-        <label for="password_confirmation" class="form-label">Confirm Password</label>
-        <input type="password" class="form-control" id="password_confirmation" name="password_confirmation">
+        <label for="profile_image" class="form-label">Profile Image</label>
+        <input type="file" class="form-control" id="profile_image" name="profile_image">
     </div>
+
+    <!-- Display current profile image if it exists -->
+    @if($user->profile_image)
+        <img src="{{ $user->profile_image }}" alt="Profile Image" width="100">
+    @endif
+
     <button type="submit" class="btn btn-primary">Update User</button>
 </form>
 @endsection

@@ -15,8 +15,8 @@ return new class extends Migration
     {
         Schema::table('events', function (Blueprint $table) {
             $table->integer('capacity')->change(); // Change column type from string to integer
-            $table->foreignId('categories_id')->constrained()->onDelete('cascade');  // Foreign key to categories table
-            $table->foreignId('users_id')->constrained()->onDelete('cascade');      // Foreign key to users table (creator of event)
+            $table->foreignId('category-id')->constrained()->onDelete('cascade');  // Foreign key to categories table
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');      // Foreign key to users table (creator of event)
             
         });
     }

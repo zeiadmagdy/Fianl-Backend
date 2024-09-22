@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('events_users', function (Blueprint $table) {
             $table->id();
-        $table->foreignId('events_id')->constrained()->onDelete('cascade'); // Foreign key to events table
+        $table->foreignId('event_id')->constrained()->onDelete('cascade'); // Foreign key to events table
         $table->foreignId('users_id')->constrained()->onDelete('cascade');  // Foreign key to users table
         $table->timestamps();
         });

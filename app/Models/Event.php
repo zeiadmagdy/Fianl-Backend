@@ -21,7 +21,6 @@ class Event extends Model
         'location',
         'event_image',
         'categories_id', // Foreign key to categories table
-        'users_id',     // Foreign key to users table
     ];
 
     /**
@@ -45,6 +44,6 @@ class Event extends Model
      */
     public function attendees()
     {
-        return $this->belongsToMany(User::class, 'event_user'); // Assuming 'event_user' is the pivot table
+        return $this->belongsToMany(User::class, 'events_users'); // Use 'users_events' as the pivot table
     }
 }

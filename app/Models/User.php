@@ -30,4 +30,12 @@ class User extends Authenticatable
     public function isAdmin() {
         return $this->is_admin === 1;
     }
+
+    /**
+     * Define a relationship where a user can attend many events.
+     */
+    public function events()
+    {
+        return $this->belongsToMany(Event::class, 'events_users'); // Use 'users_events' as the pivot table
+    }
 }

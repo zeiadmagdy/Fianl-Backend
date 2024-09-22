@@ -15,6 +15,10 @@ class Categories extends Model
     // Allow mass assignment on these fields
     protected $fillable = ['name', 'description', 'capacity'];
 
+        // Disable timestamps
+        // public $timestamps = false;
+
+
     /**
      * Define a relationship where a category has many events.
      */

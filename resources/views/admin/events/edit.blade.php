@@ -15,16 +15,18 @@
                     @method('PUT')
                     <div class="form-group">
                         <label for="name">Event Name</label>
-                        <input type="text" class="form-control" name="name" id="name" value="{{ $event->name }}" required>
+                        <input type="text" class="form-control" name="name" id="name" value="{{ $event->name }}"
+                            required>
                     </div>
                     <div class="form-group">
                         <label for="date">Event Date</label>
-                        <input type="datetime-local" class="form-control" name="date" id="date" 
-                               value="{{ \Carbon\Carbon::parse($event->date)->format('Y-m-d\TH:i') }}" required>
+                        <input type="datetime-local" class="form-control" name="date" id="date"
+                            value="{{ \Carbon\Carbon::parse($event->date)->format('Y-m-d\TH:i') }}" required>
                     </div>
                     <div class="form-group">
                         <label for="description">Description</label>
-                        <textarea class="form-control" name="description" id="description">{{ $event->description }}</textarea>
+                        <textarea class="form-control" name="description"
+                            id="description">{{ $event->description }}</textarea>
                     </div>
                     <button type="submit" class="btn btn-success">Update Event</button>
                 </form>

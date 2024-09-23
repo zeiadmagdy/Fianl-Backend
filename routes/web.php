@@ -28,7 +28,7 @@ Route::get('/admin/login', [AdminController::class, 'showLoginForm'])->name('adm
 Route::post('/admin/login', [AdminController::class, 'login'])->name('admin.login.post');
 
 // Protect routes with 'admin' middleware
-Route::middleware('admin')->prefix(prefix: 'admin')->name('admin.')->group(function () {
+Route::middleware('admin')->prefix( 'admin')->name('admin.')->group(function () {
 
     // Dashboard route
     Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');

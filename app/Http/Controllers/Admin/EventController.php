@@ -12,13 +12,13 @@ class EventController extends Controller
 {
     public function index()
     {
-        $events = Event::with('category')->get(); 
-        return view('admin.events.index', compact('events'));
+        $events = Event::with('category')->get();
+        return view( 'admin.events.index', compact('events'));
     }
 
     public function create()
     {
-        $categories = Categories::all();  
+        $categories = Categories::all();
         return view('admin.events.create', compact('categories'));
     }
 
@@ -41,7 +41,7 @@ class EventController extends Controller
 
     public function edit(Event $event)
     {
-        $categories = Categories::all();  
+        $categories = Categories::all();
         return view('admin.events.edit', compact('event', 'categories'));
     }
 

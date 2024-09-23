@@ -7,6 +7,8 @@
 
 @if($user->profile_image)
     <img src="{{ $user->profile_image }}" alt="Profile Image" width="150">
+@else
+    <p>No profile image available</p>
 @endif
 
 <p><strong>Name:</strong> {{ $user->name }}</p>

@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Http\Requests\UserRequest;
 use Illuminate\Support\Facades\Hash;
-use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary; // Import Cloudinary
+use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 
 class UserController extends Controller
 {
@@ -75,5 +75,10 @@ class UserController extends Controller
         }
         $user->delete();
         return redirect()->route('admin.users.index')->with('success', 'User deleted successfully.');
+    }
+
+    public function show(User $user)
+    {
+        return view('admin.users.show', compact('user'));
     }
 }

@@ -5,7 +5,7 @@
 @section('content')
 <h1>Edit User</h1>
 
-<form action="{{ route('admin.users.update', $user) }}" method="POST" enctype="multipart/form-data"> <!-- Add enctype -->
+<form action="{{ route('admin.users.update', $user) }}" method="POST" enctype="multipart/form-data">
     @csrf
     @method('PUT')
     <div class="mb-3">
@@ -25,7 +25,6 @@
         <input type="file" class="form-control" id="profile_image" name="profile_image">
     </div>
 
-    <!-- Display current profile image if it exists -->
     @if($user->profile_image)
         <img src="{{ $user->profile_image }}" alt="Profile Image" width="100">
     @endif

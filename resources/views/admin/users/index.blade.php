@@ -10,7 +10,7 @@
     <thead>
         <tr>
             <th>ID</th>
-            <th>Profile Image</th> <!-- Add this -->
+            <th>Profile Image</th>
             <th>Name</th>
             <th>Email</th>
             <th>Actions</th>
@@ -30,6 +30,7 @@
                 <td>{{ $user->name }}</td>
                 <td>{{ $user->email }}</td>
                 <td>
+                    <a href="{{ route('admin.users.show', $user->id) }}" class="btn btn-info">View</a>
                     <a href="{{ route('admin.users.edit', $user) }}" class="btn btn-warning">Edit</a>
                     <form action="{{ route('admin.users.destroy', $user) }}" method="POST" style="display:inline;">
                         @csrf

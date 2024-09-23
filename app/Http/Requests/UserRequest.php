@@ -19,6 +19,8 @@ class UserRequest extends FormRequest
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users,email,' . $userId,
             'password' => 'nullable|string|min:8|confirmed', // Password is nullable for updates
+            'profile_image' => 'nullable|image|max:2048',
+
         ];
     }
 }

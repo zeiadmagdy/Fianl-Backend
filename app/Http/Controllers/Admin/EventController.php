@@ -82,4 +82,14 @@ class EventController extends Controller
             return response()->json(['message' => 'You are now attending the event.'], 200);
         }
     }
+
+    public function show($id)
+{
+    // Find the event by ID
+    $event = Event::findOrFail($id);
+
+    // Return the view and pass the event data to it
+    return view('admin.events.show', compact('event'));
+}
+
 }

@@ -20,7 +20,7 @@ class Event extends Model
         'capacity',
         'location',
         'event_image',
-        'categories_id', // Foreign key to categories table
+        'category_id', // Foreign key to categories table
     ];
 
     /**
@@ -28,7 +28,7 @@ class Event extends Model
      */
     public function category()
     {
-        return $this->belongsTo(Categories::class, 'categories_id'); // Use 'categories_id' as the foreign key
+        return $this->belongsTo(Categories::class, 'category_id'); // Use 'category_id' as the foreign key
     }
 
     /**
@@ -36,7 +36,7 @@ class Event extends Model
      */
     public function creator()
     {
-        return $this->belongsTo(User::class, 'users_id'); // Use 'users_id' as the foreign key
+        return $this->belongsTo(User::class, 'user_id'); // Use 'users_id' as the foreign key
     }
 
     /**

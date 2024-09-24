@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Http\Requests\UserRequest;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Http\JsonResponse;
 use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 
 class UserController extends Controller
@@ -81,4 +82,19 @@ class UserController extends Controller
     {
         return view('admin.users.show', compact('user'));
     }
+
+    
+    public function getUserById($id): JsonResponse
+    {
+        $user = User::findOrFail($id); // Retrieve user by ID
+        return response()->json($user); // Return user data as JSON
+    }
+
+
+
+
+
+
+
+
 }

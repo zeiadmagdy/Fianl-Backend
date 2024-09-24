@@ -25,19 +25,22 @@
                         <!-- Event Name -->
                         <div class="form-group mb-3">
                             <label for="name">Event Name</label>
-                            <input type="text" name="name" class="form-control" placeholder="Enter event name" value="{{ old('name') }}" required>
+                            <input type="text" name="name" class="form-control" placeholder="Enter event name"
+                                value="{{ old('name') }}" required>
                         </div>
 
                         <!-- Event Date -->
                         <div class="form-group mb-3">
                             <label for="date">Event Date</label>
-                            <input type="datetime-local" name="date" class="form-control" value="{{ old('date') }}" required>
+                            <input type="datetime-local" name="date" class="form-control" value="{{ old('date') }}"
+                                required>
                         </div>
 
                         <!-- Event Description -->
                         <div class="form-group mb-3">
                             <label for="description">Event Description</label>
-                            <textarea name="description" class="form-control" rows="4" placeholder="Enter event description">{{ old('description') }}</textarea>
+                            <textarea name="description" class="form-control" rows="4"
+                                placeholder="Enter event description">{{ old('description') }}</textarea>
                         </div>
 
                         <!-- Event Category -->

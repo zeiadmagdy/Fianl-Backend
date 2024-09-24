@@ -22,24 +22,28 @@ class AuthController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return response()->json(['errors' => $validator->errors()], 422);
+            return response()->json(['error' => $validator->messages()], 422);
         }
 
-        // Create the user
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-        ]);
+        try {
+            // Create the user
+            $user = User::create([
+                'name' => $request->name,
+                'email' => $request->email,
+                'password' => Hash::make($request->password),
+            ]);
 
-        // Generate Sanctum token for the newly registered user
-        $token = $user->createToken('user-token')->plainTextToken;
+            // Generate Sanctum token for the newly registered user
+            $token = $user->createToken('user-token')->plainTextToken;
 
-        return response()->json([
-            'message' => 'User registered successfully',
-            'token' => $token,
-            'user' => $user,
-        ]);
+            return response()->json([
+                'message' => 'User registered successfully',
+                'token' => $token,
+                'user' => $user,
+            ], 201); // Should return a 201 status code
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'An error occurred while registering the user'], 500);
+        }
     }
 
     // Login method

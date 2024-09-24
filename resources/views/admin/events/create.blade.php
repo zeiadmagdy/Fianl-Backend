@@ -45,8 +45,8 @@
 
                         <!-- Event Category -->
                         <div class="form-group mb-3">
-                            <label for="categories_id">Event Category</label>
-                            <select name="categories_id" class="form-control" required>
+                            <label for="category">Event Category</label>
+                            <select name="category_id" class="form-control" required>
                                 <option value="">Select Category</option>
                                 @foreach ($categories as $category)
                                     <option value="{{ $category->id }}">{{ $category->name }}</option>

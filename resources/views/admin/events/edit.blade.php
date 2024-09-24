@@ -45,7 +45,7 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="categories_id">Category</label>
+                        <label for="category_id">Category</label>
                         <select class="form-control" name="categories_id" id="categories_id" required>
                             @foreach($categories as $category)
                                 <option value="{{ $category->id }}" {{ $category->id == $event->categories_id ? 'selected' : '' }}>

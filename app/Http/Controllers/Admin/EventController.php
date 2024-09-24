@@ -31,7 +31,7 @@ class EventController extends Controller
             'capacity' => 'nullable|integer',
             'location' => 'nullable|string|max:255',
             'event_image' => 'nullable|image|max:2048',
-            'categories_id' => 'required|exists:categories,id',
+            'category_id' => 'required|exists:categories,id',
         ]);
 
         Event::create($validatedData);

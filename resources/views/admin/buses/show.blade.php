@@ -9,6 +9,29 @@
 
 <a href="{{ route('admin.buses.points.create', $bus->id) }}" class="btn btn-primary mb-3">Add Point</a>
 
+<!-- Driver Information -->
+<h2>Driver Information</h2>
+@if ($bus->driver) <!-- Checking if the bus has a driver assigned -->
+    <div class="card border-primary mb-3" style="display: flex; flex-direction: row; padding: 1rem;">
+        <!-- Driver Information (left side) -->
+        <div style="flex: 1; padding-right: 1rem;">
+            <p><strong>Name:</strong> {{ $bus->driver->name }}</p>
+            <p><strong>Phone:</strong> {{ $bus->driver->phone_number }}</p>
+        </div>
+        <!-- Driver Image (right side) -->
+        <div style="flex: 0 0 250px;">
+            @if($bus->driver->profile_image)
+                <img src="{{$bus->driver->profile_image }}" alt="Profile Image" width="100" class="img-thumbnail">
+            @else
+                <p>No Image Available</p>
+            @endif
+        </div>
+    </div>
+@else
+    <p>No driver assigned to this bus yet.</p>
+@endif
+
+<!-- Points Information -->
 <h2>Points</h2>
 <ul class="list-unstyled">
     @foreach ($bus->points->sortBy('arrived_time') as $point)
@@ -44,7 +67,7 @@
                 </div>
 
                 <div style="flex: 1;">
-                    <h5 class="card-title">Point Name:{{ $point->name }}</h5>
+                    <h5 class="card-title">Point Name: {{ $point->name }}</h5>
                     <p class="card-text">Description: {{ $point->description }}</p>
                     <p class="card-text">Arrived Time: {{ $point->arrived_time }}</p>
 
@@ -58,7 +81,7 @@
             </div>
         </li>
     @endforeach
-    <a href="{{ route('admin.buses.index') }}" class="btn btn-secondary mt-3">Back to Buses</a>
-
 </ul>
+
+<a href="{{ route('admin.buses.index') }}" class="btn btn-secondary mt-3">Back to Buses</a>
 @endsection

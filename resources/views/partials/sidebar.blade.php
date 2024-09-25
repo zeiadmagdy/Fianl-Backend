@@ -29,4 +29,10 @@
             <p>Buses</p>
         </a>
     </li>
+
+    <li class="nav-item">
+        <a class="nav-link" href="{{ route('admin.drivers.index') }}"  class="nav-link">
+            <i class="nav-icon fas fa-user-tie"></i> Drivers
+        </a>
+    </li>
 </ul>

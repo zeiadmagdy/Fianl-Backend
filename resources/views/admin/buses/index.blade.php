@@ -13,6 +13,7 @@
             <th>Bus Number</th>
             <th>Capacity</th>
             <th>Bus Line</th>
+            <th>Driver</th>
             <th>Points</th>
             <th>Actions</th>
         </tr>
@@ -25,6 +26,9 @@
                 <td>{{ $bus->bus_number }}</td>
                 <td>{{ $bus->capacity }}</td>
                 <td>{{ $bus->bus_line }}</td>
+                <td>
+                    {{ $bus->driver->name ?? 'No Driver Assigned' }}
+                </td>
                 <td>
                     <ul>
                         @foreach ($bus->points->sortBy('arrived_time') as $point)

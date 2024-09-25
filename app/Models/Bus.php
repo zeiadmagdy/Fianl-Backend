@@ -17,4 +17,10 @@ class Bus extends Model
     {
         return $this->hasMany(Point::class);
     }
+
+    // One Bus has one Driver
+    public function driver()
+    {
+        return $this->hasOne(Driver::class);
+    }
 }

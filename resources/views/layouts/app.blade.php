@@ -9,18 +9,18 @@
 
     <!-- Load assets via Vite -->
     @vite([
-        'resources/js/app.js',
-        'resources/css/app.css',
-        'node_modules/admin-lte/dist/css/adminlte.min.css',
-        'node_modules/font-awesome/css/font-awesome.css', // Use this instead of font-awesome.min.css
-        'node_modules/bootstrap/dist/css/bootstrap.min.css',
-    ])
+    'resources/js/app.js',
+    'resources/css/app.css',
+    'node_modules/admin-lte/dist/css/adminlte.min.css',
+    'node_modules/admin-lte/plugins/fontawesome-free/css/all.min.css',
+    'node_modules/admin-lte/plugins/bootstrap/css/bootstrap.min.css',
+])
 </head>
 
 <body class="hold-transition">
     <div class="wrapper">
         <!-- @include('partials.navbar') -->
-        <aside class="main-sidebar sidebar-dark-primary elevation-4">
+        <aside class="main-sidebar sidebar-dark-primary elevation-4" >
             @include('partials.sidebar')
         </aside>
 
@@ -37,9 +37,10 @@
 
     <!-- Vite will load JS dependencies -->
     @vite([
-        'node_modules/jquery/dist/jquery.min.js',
-        'node_modules/bootstrap/dist/js/bootstrap.bundle.min.js',
-        'node_modules/admin-lte/dist/js/adminlte.min.js',
-    ])
+    'node_modules/admin-lte/plugins/jquery/jquery.min.js',
+    'node_modules/admin-lte/plugins/bootstrap/js/bootstrap.bundle.min.js',
+    'node_modules/admin-lte/dist/js/adminlte.min.js',
+])
 </body>
 </html>
+

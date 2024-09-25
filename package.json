@@ -18,6 +18,7 @@
         "bootstrap": "^5.3.3",
         "flag-icons": "^7.2.3",
         "font-awesome": "^4.7.0",
-        "jquery": "^3.7.1"
+        "jquery": "^3.7.1",
+        "reset-css": "^5.0.2"
     }
 }

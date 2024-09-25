@@ -10,10 +10,17 @@ use Illuminate\Support\Facades\Auth;
 
 class EventController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         $events = Event::with('category')->get();
-        return view( 'admin.events.index', compact('events'));
+
+        // Return JSON response if requested from an API
+        if ($request->expectsJson()) {
+            return response()->json($events, 200);
+        }
+
+        // Otherwise, return the view (Web)
+        return view('admin.events.index', compact('events'));
     }
 
     public function create()
@@ -45,6 +52,19 @@ class EventController extends Controller
         return view('admin.events.edit', compact('event', 'categories'));
     }
 
+    public function show(Request $request, $id)
+    {
+        $event = Event::with('category')->findOrFail($id);
+
+        // Check if the request expects a JSON response (API)
+        if ($request->expectsJson()) {
+            return response()->json($event, 200);
+        }
+
+        // Otherwise, return the view (Web)
+        return view('admin.events.show', compact('event'));
+    }
+
     public function update(Request $request, Event $event)
     {
         $validatedData = $request->validate([
@@ -54,7 +74,7 @@ class EventController extends Controller
             'capacity' => 'nullable|integer',
             'location' => 'nullable|string|max:255',
             'event_image' => 'nullable|image|max:2048',
-            'categories_id' => 'required|exists:categories,id',
+            'category_id' => 'required|exists:categories,id',
         ]);
 
         $event->update($validatedData);
@@ -82,14 +102,4 @@ class EventController extends Controller
             return response()->json(['message' => 'You are now attending the event.'], 200);
         }
     }
-
-    public function show($id)
-{
-    // Find the event by ID
-    $event = Event::findOrFail($id);
-
-    // Return the view and pass the event data to it
-    return view('admin.events.show', compact('event'));
-}
-
 }

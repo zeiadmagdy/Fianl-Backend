@@ -83,7 +83,7 @@ class UserController extends Controller
         return view('admin.users.show', compact('user'));
     }
 
-    
+
     public function getUserById($id): JsonResponse
     {
         $user = User::findOrFail($id); // Retrieve user by ID

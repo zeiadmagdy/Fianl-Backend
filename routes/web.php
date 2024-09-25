@@ -6,7 +6,8 @@ use App\Http\Controllers\Admin\EventController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Admin\CategoryController;
-
+use App\Http\Controllers\Admin\BusController;
+use App\Http\Controllers\Admin\PointController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -43,3 +44,7 @@ Route::middleware('admin')->prefix( 'admin')->name('admin.')->group(function () 
 
 });
 
+Route::middleware('admin')->prefix('admin')->name('admin.')->group(function () {
+    Route::resource('buses', BusController::class);
+    Route::resource('buses.points', PointController::class)->shallow(); // nested resource
+});

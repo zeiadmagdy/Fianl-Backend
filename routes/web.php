@@ -9,6 +9,7 @@ use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\BusController;
 use App\Http\Controllers\Admin\PointController;
 use App\Http\Controllers\Admin\DriverController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -30,10 +31,10 @@ Route::get('/admin/login', [AdminController::class, 'showLoginForm'])->name('adm
 Route::post('/admin/login', [AdminController::class, 'login'])->name('admin.login.post');
 
 // Protect routes with 'admin' middleware
-Route::middleware('admin')->prefix( 'admin')->name('admin.')->group(function () {
+Route::middleware('admin')->prefix('admin')->name('admin.')->group(function () {
 
     // Dashboard route
-    Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard'); // Updated this line
 
     // User routes (resourceful)
     Route::resource('users', UserController::class);

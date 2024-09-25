@@ -6,15 +6,19 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Models\Event;
-
+use App\Models\Bus;
+use App\Models\Driver;
+use App\Models\Categories;
 class DashboardController extends Controller
 {
     public function index()
-{
-    $userCount = User::count(); // Assuming you have a User model
-    $eventCount = Event::count(); // Assuming you have an Event model
-
-    return view('admin.dashboard', compact('userCount', 'eventCount'));
-}
-
+    {
+        $userCount = User::count();
+        $eventCount = Event::count();
+        $busCount = Bus::count();
+        $driverCount = Driver::count();
+        $categoryCount = Categories::count();
+    
+        return view('admin.dashboard', compact('userCount', 'eventCount', 'busCount', 'driverCount', 'categoryCount'));
+    }
 }

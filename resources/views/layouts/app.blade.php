@@ -20,6 +20,8 @@
 <body class="hold-transition">
     <div class="wrapper">
         <!-- @include('partials.navbar') -->
+        @include('partials.header') <!-- Include the header here -->
+
         <aside class="main-sidebar sidebar-dark-primary elevation-4" >
             @include('partials.sidebar')
         </aside>

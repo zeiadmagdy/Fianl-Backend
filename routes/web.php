@@ -42,9 +42,9 @@ Route::middleware('admin')->prefix( 'admin')->name('admin.')->group(function () 
 
     Route::resource('categories', CategoryController::class);
 
-});
-
-Route::middleware('admin')->prefix('admin')->name('admin.')->group(function () {
+    // Bus routes (resourceful)
     Route::resource('buses', BusController::class);
+
     Route::resource('buses.points', PointController::class)->shallow(); // nested resource
+
 });

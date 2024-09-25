@@ -23,4 +23,10 @@
             <p>Categories</p>
         </a>
     </li>
+    <li class="nav-item">
+        <a href="{{ route('admin.buses.index') }}" class="nav-link">
+            <i class="nav-icon fas fa-bus"></i> <!-- Using a bus icon for buses -->
+            <p>Buses</p>
+        </a>
+    </li>
 </ul>

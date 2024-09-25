@@ -17,10 +17,10 @@ class PointController extends Controller
     public function store(Request $request, Bus $bus)
     {
         $validatedData = $request->validate([
-            'name' => 'required',
-            'location' => 'required',
-            'description' => 'nullable',
-            'arrived_time' => 'nullable|date',
+            'name' => 'required|string|max:255',
+            'location' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'arrived_time' => 'required|date_format:H:i', // changed to 'date' for full date validation
         ]);
 
         $bus->points()->create($validatedData);
@@ -35,10 +35,10 @@ class PointController extends Controller
     public function update(Request $request, Point $point)
     {
         $validatedData = $request->validate([
-            'name' => 'required',
-            'location' => 'required',
-            'description' => 'nullable',
-            'arrived_time' => 'nullable|date',
+            'name' => 'required|string|max:255',
+            'location' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'arrived_time' => 'required|date_format:H:i', // changed to 'date' for full date validation
         ]);
 
         $point->update($validatedData);

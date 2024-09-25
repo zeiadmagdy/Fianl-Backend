@@ -18,7 +18,7 @@ class PointController extends Controller
     {
         $validatedData = $request->validate([
             'name' => 'required|string|max:255',
-            'location' => 'required|string|max:255',
+            'location' => 'required|url',
             'description' => 'nullable|string',
             'arrived_time' => 'required|date_format:H:i', // changed to 'date' for full date validation
         ]);
@@ -36,7 +36,7 @@ class PointController extends Controller
     {
         $validatedData = $request->validate([
             'name' => 'required|string|max:255',
-            'location' => 'required|string|max:255',
+            'location' => 'required|url',
             'description' => 'nullable|string',
             'arrived_time' => 'required|date_format:H:i', // changed to 'date' for full date validation
         ]);

@@ -13,8 +13,8 @@
             <input type="text" class="form-control" id="name" name="name" required>
         </div>
         <div class="mb-3">
-            <label for="location" class="form-label">Location</label>
-            <input type="text" class="form-control" id="location" name="location" required>
+            <label for="location" class="form-label">Google Maps Location URL</label>
+            <input type="text" class="form-control" id="location" name="location" value="{{ old('location') }}" placeholder="Enter Google Maps URL" required>
         </div>
         <div class="mb-3">
             <label for="description" class="form-label">Description</label>

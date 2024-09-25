@@ -13,9 +13,10 @@
         <input type="text" class="form-control" id="name" name="name" value="{{ $point->name }}" required>
     </div>
     <div class="mb-3">
-        <label for="location" class="form-label">Location</label>
-        <input type="text" class="form-control" id="location" name="location" value="{{ $point->location }}" required>
+        <label for="location" class="form-label">Google Maps Location Link</label>
+        <input type="url" class="form-control" id="location" name="location" value="{{ old('location', $point->location ?? '') }}" required>
     </div>
+    
     <div class="mb-3">
         <label for="description" class="form-label">Description</label>
         <textarea class="form-control" id="description" name="description">{{ $point->description }}</textarea>

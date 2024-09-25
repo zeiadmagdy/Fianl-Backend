@@ -27,8 +27,5 @@ Route::post('/login', [AuthController::class, 'login']);
 Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
 Route::get('/users/{id}', [UserController::class, 'getUserById']);
 
-Route::get('/events', [EventController::class, 'index'])->middleware('auth:sanctum');
-Route::get('/events/{id}', [EventController::class, 'show'])->middleware('auth:sanctum');
-Route::post('/events', [EventController::class, 'store'])->name('events.create')->middleware('auth:sanctum');
-Route::post('/events/{id}', [EventController::class, 'update'])->name('events.update')->middleware('auth:sanctum');
-Route::delete('/events/{id}', [EventController::class, 'destroy'])->middleware('auth:sanctum');
+Route::get('/events', [EventController::class, 'index']);
+Route::get('/events/{id}', [EventController::class, 'show']);

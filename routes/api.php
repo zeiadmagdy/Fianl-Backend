@@ -25,7 +25,10 @@ Route::get('/login', [AuthController::class, 'login'])->name('login');
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
+
+Route::get('/users', [UserController::class, 'index']);
 Route::get('/users/{id}', [UserController::class, 'getUserById']);
+Route::put('/users/{id}', [UserController::class, 'update']); // PUT method for updating
 
 Route::get('/events', [EventController::class, 'index']);
 Route::get('/events/{id}', [EventController::class, 'show']);

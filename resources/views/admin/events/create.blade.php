@@ -20,7 +20,11 @@
                         </div>
                     @endif
 
-                    <form action="{{ route('admin.events.store') }}" method="POST">
+                    @if (session('success'))
+                        <div class="alert alert-success">{{ session('success') }}</div>
+                    @endif
+
+                    <form action="{{ route('admin.events.store') }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         <!-- Event Name -->
                         <div class="form-group mb-3">
@@ -41,6 +45,26 @@
                             <label for="description">Event Description</label>
                             <textarea name="description" class="form-control" rows="4"
                                 placeholder="Enter event description">{{ old('description') }}</textarea>
+                        </div>
+
+                        <!-- Event Capacity -->
+                        <div class="form-group mb-3">
+                            <label for="capacity">Capacity</label>
+                            <input type="number" name="capacity" class="form-control" placeholder="Enter capacity"
+                                value="{{ old('capacity') }}" required>
+                        </div>
+
+                        <!-- Event Location -->
+                        <div class="form-group mb-3">
+                            <label for="location">Location</label>
+                            <input type="text" name="location" class="form-control" placeholder="Enter location"
+                                value="{{ old('location') }}" required>
+                        </div>
+
+                        <!-- Event Image -->
+                        <div class="form-group mb-3">
+                            <label for="event_image">Event Image</label>
+                            <input type="file" name="event_image" class="form-control" required>
                         </div>
 
                         <!-- Event Category -->

@@ -7,7 +7,8 @@ use App\Models\Event;
 use App\Models\Categories;  // Include the Categories model
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-
+use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
+use RealRashid\SweetAlert\Facades\Alert;
 class EventController extends Controller
 {
     public function index(Request $request)
@@ -37,11 +38,17 @@ class EventController extends Controller
             'description' => 'nullable|string',
             'capacity' => 'nullable|integer',
             'location' => 'nullable|string|max:255',
-            'event_image' => 'nullable|image|max:2048',
+            'event_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'category_id' => 'required|exists:categories,id',
         ]);
+        if ($request->hasFile('event_image')) {
+            $uploadedFileUrl = Cloudinary::upload($request->file('event_image')->getRealPath())->getSecurePath();
+            $validatedData['event_image'] = $uploadedFileUrl; // Store Cloudinary URL
+        }
 
         Event::create($validatedData);
+
+        Alert::success('Success', 'Event created successfully.');
 
         return redirect()->route('admin.events.index')->with('success', 'Event created successfully.');
     }
@@ -73,18 +80,40 @@ class EventController extends Controller
             'description' => 'nullable|string',
             'capacity' => 'nullable|integer',
             'location' => 'nullable|string|max:255',
-            'event_image' => 'nullable|image|max:2048',
+            'event_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'category_id' => 'required|exists:categories,id',
         ]);
 
+        // Process new profile image
+        if ($request->hasFile('event_image')) {
+            // Remove old image from Cloudinary if it exists
+            if ($event->event_image) {
+                // Extract public ID from URL for deletion
+                $publicId = basename($event->event_image, '.'.$event->event_image->getExtension());
+                Cloudinary::destroy($publicId);
+            }
+            // Upload the new image
+            $uploadedFileUrl = Cloudinary::upload($request->file('event_image')->getRealPath())->getSecurePath();
+            $validatedData['event_image'] = $uploadedFileUrl; // Store Cloudinary URL
+        }
+
         $event->update($validatedData);
+
+        Alert::success('Success', 'Event updated successfully.');
 
         return redirect()->route('admin.events.index')->with('success', 'Event updated successfully.');
     }
 
     public function destroy(Event $event)
-    {
+    {    
+        if ($event->event_image) {
+        // Remove old image from Cloudinary if it exists
+        $publicId = basename($event->event_image, '.'.$event->event_image->getExtension());
+        Cloudinary::destroy($publicId);
+    }
         $event->delete();
+
+        Alert::success('Success', 'Event deleted successfully.');
 
         return redirect()->route('admin.events.index')->with('success', 'Event deleted successfully.');
     }

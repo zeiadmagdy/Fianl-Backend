@@ -7,8 +7,9 @@
     <div class="col-12">
         <div class="card">
             <div class="card-header">
-                <h3 class="card-title">Events</h3>
+                <h3 class="card-title"></h3>
                 <a href="{{ route('admin.events.create') }}" class="btn btn-primary float-right">Add Event</a>
+                <a href="{{ route('admin.dashboard') }}" class="btn btn-primary mb-3">Back to Dashboard</a>
             </div>
             <div class="card-body">
                 @if(session('success'))
@@ -20,9 +21,9 @@
                             <th>ID</th>
                             <th>Name</th>
                             <th>Date</th>
-                            <th>Actions</th>
                             <th>Category</th>
-
+                            <th>Capacity</th>
+                            <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -32,15 +33,14 @@
                                 <td>{{ $event->name }}</td>
                                 <td>{{ $event->date }}</td>
                                 <td>{{ $event->category->name }}</td>
-
+                                <td>{{ $event->capacity }}</td>
                                 <td>
                                     <a href="{{ route('admin.events.show', $event->id) }}" class="btn btn-info">View</a>
                                     <a href="{{ route('admin.events.edit', $event) }}" class="btn btn-warning">Edit</a>
-                                    <form action="{{ route('admin.events.destroy', $event) }}" method="POST"
-                                        style="display:inline;">
+                                    <form id="delete-form-{{ $event->id }}" action="{{ route('admin.events.destroy', $event) }}" method="POST" style="display:inline;">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="btn btn-danger">Delete</button>
+                                        <button type="button" onclick="confirmDelete({{ $event->id }})" class="btn btn-danger">Delete</button>
                                     </form>
                                 </td>
                             </tr>
@@ -52,3 +52,29 @@
     </div>
 </div>
 @endsection
+
+<script>
+    function confirmDelete(eventId) {
+        const title = 'Delete event!';
+        const text = 'Are you sure you want to delete this Event?';
+        
+        Swal.fire({
+            title: title,
+            text: text,
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!',
+            cancelButtonText: 'No, cancel!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // If confirmed, submit the form
+                document.getElementById('delete-form-' + eventId).submit();
+            } else {
+                // Optionally show a message for cancellation
+                Swal.fire('Cancelled', 'Event deletion has been cancelled.', 'error');
+            }
+        });
+    }
+</script>

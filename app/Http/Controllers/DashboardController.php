@@ -9,6 +9,7 @@ use App\Models\Event;
 use App\Models\Bus;
 use App\Models\Driver;
 use App\Models\Categories;
+use Carbon\Carbon;
 class DashboardController extends Controller
 {
     public function index()
@@ -19,6 +20,14 @@ class DashboardController extends Controller
         $driverCount = Driver::count();
         $categoryCount = Categories::count();
     
-        return view('admin.dashboard', compact('userCount', 'eventCount', 'busCount', 'driverCount', 'categoryCount'));
+        $upcomingEvents = Event::where('date', '>=', now())
+        ->orderBy('date')
+        ->take(3)
+        ->get()
+        ->map(function($event) {
+            $event->date = Carbon::parse($event->date); // Convert to Carbon
+            return $event;
+        });
+        return view('admin.dashboard', compact('userCount', 'eventCount', 'busCount', 'driverCount', 'categoryCount', 'upcomingEvents'));
     }
 }

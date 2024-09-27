@@ -72,4 +72,31 @@
         </div>
     </div>
 </div>
+
+<!-- Upcoming Events Card -->
+<div class="row">
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-header bg-info">
+                <h3 class="card-title">Upcoming Events</h3>
+            </div>
+            <div class="card-body">
+                <ul class="list-group">
+                    @if($upcomingEvents->isEmpty())
+                        <li class="list-group-item">No upcoming events.</li>
+                    @else
+                        @foreach ($upcomingEvents as $event)
+                            <li class="list-group-item">
+                                <strong>{{ $event->name }}</strong><br>
+                                Date: {{ $event->date->format('Y-m-d') }}<br>
+                                Description: {{ $event->description }}
+                            </li>
+                        @endforeach
+                    @endif
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
 @endsection

@@ -4,7 +4,7 @@
 <div class="container">
     <h1>Edit Category</h1>
 
-    <form action="{{ route('admin.categories.update', $category->id) }}" method="POST">
+    <form action="{{ route('admin.categories.update', $category->id) }}" method="POST" enctype="multipart/form-data">
         @csrf
         @method('PUT')
         <div class="form-group">
@@ -18,11 +18,16 @@
         </div>
 
         <div class="form-group">
-            <label for="capacity">Capacity:</label>
-            <input type="number" class="form-control" name="capacity" value="{{ $category->capacity }}">
+            <label for="category_image" class="form-label">Category Image:</label>
+            <input type="file" class="form-control" id="category_image" name="category_image">
+            @if($category->category_image)
+                <img src="{{ $category->category_image }}" alt="Category Image" style="max-width: 150px; margin-top: 10px;">
+            @endif
         </div>
 
         <button type="submit" class="btn btn-success">Update Category</button>
+        <a href="{{ route('admin.categories.index') }}" class="btn btn-primary">Back to Categories</a>
+
     </form>
 </div>
 @endsection

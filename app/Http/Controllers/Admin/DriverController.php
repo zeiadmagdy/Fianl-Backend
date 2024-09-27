@@ -8,6 +8,7 @@ use App\Models\Bus;
 use Illuminate\Http\Request;
 use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 
+use RealRashid\SweetAlert\Facades\Alert;
 class DriverController extends Controller
 {
     // Display a listing of the drivers
@@ -16,6 +17,12 @@ class DriverController extends Controller
         $drivers = Driver::with('bus')->get(); // Eager loading the bus relation
         return view('admin.drivers.index', compact('drivers'));
     }
+
+    // Show the details of the specified driver
+public function show(Driver $driver)
+{
+    return view('admin.drivers.show', compact('driver'));
+}
 
     // Show the form for creating a new driver
     public function create()
@@ -44,6 +51,7 @@ class DriverController extends Controller
 
         Driver::create($data);
 
+        Alert::success('Success', 'Driver created successfully.');
         return redirect()->route('admin.drivers.index')->with('success', 'Driver created successfully.');
     }
 
@@ -51,6 +59,7 @@ class DriverController extends Controller
     public function edit(Driver $driver)
     {
         $buses = Bus::all(); // Fetch all buses for assignment
+
         return view('admin.drivers.edit', compact('driver', 'buses'));
     }
 
@@ -79,6 +88,8 @@ class DriverController extends Controller
 
         $driver->update($data);
 
+        Alert::success('Success', 'Driver updated successfully.');
+
         return redirect()->route('admin.drivers.index')->with('success', 'Driver updated successfully.');
     }
 
@@ -91,6 +102,8 @@ class DriverController extends Controller
         }
 
         $driver->delete();
+
+        Alert::success('Success', 'Driver deleted successfully.');
 
         return redirect()->route('admin.drivers.index')->with('success', 'Driver deleted successfully.');
     }

@@ -21,7 +21,7 @@
                             <th>ID</th>
                             <th>Name</th>
                             <th>Date</th>
-                            <th>Category</th>
+                            <th>Category</th> <!-- Category Column -->
                             <th>Capacity</th>
                             <th>Actions</th>
                         </tr>
@@ -32,7 +32,11 @@
                                 <td>{{ $event->id }}</td>
                                 <td>{{ $event->name }}</td>
                                 <td>{{ $event->date }}</td>
-                                <td>{{ $event->category->name }}</td>
+                                <td>
+                                    <a href="{{ route('admin.categories.show', $event->category->id) }}">
+                                        {{ $event->category->name }}
+                                    </a> <!-- Category is clickable now -->
+                                </td>
                                 <td>{{ $event->capacity }}</td>
                                 <td>
                                     <a href="{{ route('admin.events.show', $event->id) }}" class="btn btn-info">View</a>

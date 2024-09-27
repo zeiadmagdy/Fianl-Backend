@@ -28,7 +28,34 @@
     @if($user->profile_image)
         <img src="{{ $user->profile_image }}" alt="Profile Image" width="100">
     @endif
-
+    <div class="mb-3">
+        <label for="location" class="form-label">Location</label>
+        <input type="text" class="form-control" id="location" name="location" value="{{ $user->location }}">
+    </div>
+    <div class="mb-3">
+        <label for="gender" class="form-label">Gender</label>
+        <select class="form-control" id="gender" name="gender">
+            <option value="male" {{ $user->gender == 'male' ? 'selected' : '' }}>Male</option>
+            <option value="female" {{ $user->gender == 'female' ? 'selected' : '' }}>Female</option>
+            <option value="other" {{ $user->gender == 'other' ? 'selected' : '' }}>Other</option>
+        </select>
+    </div>
+    <div class="mb-3">
+        <label for="bio" class="form-label">Bio</label>
+        <textarea class="form-control" id="bio" name="bio">{{ $user->bio }}</textarea>
+    </div>
+    <div class="mb-3">
+        <label for="birth_date" class="form-label">Birth Date</label>
+        <input type="date" class="form-control" id="birth_date" name="birth_date" value="{{ $user->birth_date }}">
+    </div>
+    <div class="mb-3">
+        <label for="is_admin" class="form-label">Admin Role</label>
+        <select class="form-control" id="is_admin" name="is_admin">
+            <option value="0" {{ $user->is_admin == 0 ? 'selected' : '' }}>No</option>
+            <option value="1" {{ $user->is_admin == 1 ? 'selected' : '' }}>Yes</option>
+        </select>
+    </div>
     <button type="submit" class="btn btn-primary">Update User</button>
+    <a href="{{ route('admin.users.index') }}" class="btn btn-primary mt-3">Back to Users</a>
 </form>
 @endsection

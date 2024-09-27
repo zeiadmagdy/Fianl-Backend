@@ -8,6 +8,7 @@ use App\Http\Requests\UserRequest;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\JsonResponse;
 use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class UserController extends Controller
 {
@@ -40,6 +41,7 @@ class UserController extends Controller
         if ($request->hasFile('profile_image')) {
             $uploadedFileUrl = Cloudinary::upload($request->file('profile_image')->getRealPath())->getSecurePath();
             $profile_image_url = $uploadedFileUrl;
+            
         }
 
         User::create([
@@ -47,7 +49,14 @@ class UserController extends Controller
             'email' => $request->email,
             'password' => Hash::make($request->password),
             'profile_image' => $profile_image_url, // Store profile image URL
+            'location' => $request->location ?? null, // Set default value
+            'gender' => $request->gender ?? null, // Set default value
+            'bio' => $request->bio ?? null, // Set default value
+            'birth_date' => $request->birth_date ?? null, // Set default value
+            'is_admin' => $request->is_admin ?? 0, // Set default value
         ]);
+
+        Alert::success('Success', 'User created successfully.');
 
         return redirect()->route('admin.users.index')->with('success', 'User created successfully.');
     }
@@ -105,7 +114,30 @@ class UserController extends Controller
             $user->password = Hash::make($request->password);
             $userNeedsUpdate = true;
         }
-
+        if ($request->location !== $user->location) {
+            $user->location = $request->location;
+            $userNeedsUpdate = true;
+        }
+    
+        if ($request->gender !== $user->gender) {
+            $user->gender = $request->gender;
+            $userNeedsUpdate = true;
+        }
+    
+        if ($request->bio !== $user->bio) {
+            $user->bio = $request->bio;
+            $userNeedsUpdate = true;
+        }
+    
+        if ($request->birth_date !== $user->birth_date) {
+            $user->birth_date = $request->birth_date;
+            $userNeedsUpdate = true;
+        }
+    
+        if ($request->is_admin !== $user->is_admin) {
+            $user->is_admin = $request->is_admin;
+            $userNeedsUpdate = true;
+        }
         // Validate the request
         $request->validate([
             'email' => 'sometimes|required|email|unique:users,email,' . $user->id,
@@ -113,8 +145,13 @@ class UserController extends Controller
 
         if ($userNeedsUpdate) {
             $user->save();
+
+            Alert::success('Success', 'User updated successfully.');
+
             return redirect()->route('admin.users.index')->with('success', 'User updated successfully.');
         }
+
+        Alert::warning('Warning', 'No changes were made.');
 
         return redirect()->route('admin.users.index')->with('warning', 'No changes were made.');
     }
@@ -130,7 +167,10 @@ class UserController extends Controller
         if ($user->profile_image) {
             Cloudinary::destroy($user->profile_image); // Assumes Cloudinary public ID stored
         }
-        $user->delete();
+        $user->delete(); // Make sure to delete the user
+
+        Alert::success('Success', 'User deleted successfully.');
+
         return redirect()->route('admin.users.index')->with('success', 'User deleted successfully.');
     }
 

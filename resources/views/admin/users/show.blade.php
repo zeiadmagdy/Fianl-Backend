@@ -13,6 +13,11 @@
 
 <p><strong>Name:</strong> {{ $user->name }}</p>
 <p><strong>Email:</strong> {{ $user->email }}</p>
+<p><strong>Location:</strong> {{ $user->location }}</p>
+<p><strong>Gender:</strong> {{ ucfirst($user->gender) }}</p>
+<p><strong>Bio:</strong> {{ $user->bio }}</p>
+<p><strong>Birth Date:</strong> {{ $user->birth_date }}</p>
+<p><strong>Admin:</strong> {{ $user->is_admin ? 'Yes' : 'No' }}</p>
 
-<a href="{{ route('admin.users.index') }}" class="btn btn-primary">Back to Users</a>
+    <a href="{{ route('admin.users.index') }}" class="btn btn-primary mt-3">Back to Users</a>
 @endsection

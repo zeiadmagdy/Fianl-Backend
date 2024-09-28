@@ -53,15 +53,8 @@
                         }
                     @endphp
 
-                    <iframe
-                        width="400"
-                        height="300"
-                        frameborder="0"
-                        scrolling="no"
-                        marginheight="0"
-                        marginwidth="0"
-                        src="https://maps.google.com/maps?q={{ $latitude }},{{ $longitude }}&output=embed"
-                        allowfullscreen>
+                    <iframe width="400" height="300" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"
+                        src="https://maps.google.com/maps?q={{ $latitude }},{{ $longitude }}&output=embed" allowfullscreen>
                     </iframe>
                     <a href="{{ $locationUrl }}" target="_blank" class="btn btn-primary mt-2">Open in Google Maps</a>
                 </div>
@@ -83,5 +76,5 @@
     @endforeach
 </ul>
 
-<a href="{{ route('admin.buses.index') }}" class="btn btn-secondary mt-3">Back to Buses</a>
+<a href="{{ route('admin.buses.index') }}" class="btn btn-secondary mb-5">Back to Buses</a>
 @endsection

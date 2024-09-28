@@ -38,7 +38,9 @@ Route::get('/users/{id}', [UserController::class, 'getUserById']);
 Route::get('/events', [EventController::class, 'index']);
 Route::get('/events/{id}', [EventController::class, 'show']);
 
-Route::post('/verify-otp', [ForgetPasswordController::class, 'verifyOtp']);
 Route::post('/forget-password', [ForgetPasswordController::class, 'sendResetOtp']);
 Route::post('/reset-password', [ForgetPasswordController::class, 'resetPassword']);
 Route::post('/send-reset-otp', [ForgetPasswordController::class, 'sendResetOtp']);
+
+Route::post('/verify-otp', [ForgetPasswordController::class, 'verifyOtp']);
+Route::post('/reset-password', [ForgetPasswordController::class, 'resetPassword']);

@@ -6,6 +6,7 @@
 <h1>Drivers</h1>
 
 <a href="{{ route('admin.drivers.create') }}" class="btn btn-primary mb-3">Add Driver</a>
+<a href="{{ route('admin.dashboard') }}" class="btn btn-primary mb-3">Back to Dashboard</a>
 
 @if($drivers->isEmpty())
     <p>No drivers available.</p>
@@ -32,8 +33,14 @@
                         No Image
                     @endif
                 </td>
-                <td>{{ $driver->bus->name ?? 'No bus assigned' }}</td>
                 <td>
+                    @if($driver->bus)
+                        <a href="{{ route('admin.buses.show', $driver->bus->id) }}">{{ $driver->bus->name }}</a>
+                    @else
+                        No bus assigned
+                    @endif
+                </td>                <td>
+                    <a href="{{ route('admin.drivers.show', $driver->id) }}" class="btn btn-info">View</a>
                     <a href="{{ route('admin.drivers.edit', $driver->id) }}" class="btn btn-warning">Edit</a>
                     <form action="{{ route('admin.drivers.destroy', $driver->id) }}" method="POST" style="display:inline;">
                         @csrf

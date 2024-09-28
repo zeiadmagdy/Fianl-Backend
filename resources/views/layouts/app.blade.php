@@ -15,6 +15,8 @@
     'node_modules/admin-lte/plugins/fontawesome-free/css/all.min.css',
     'node_modules/admin-lte/plugins/bootstrap/css/bootstrap.min.css',
 ])
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 </head>
 
 <body class="hold-transition">
@@ -42,6 +44,8 @@
     'node_modules/admin-lte/plugins/bootstrap/js/bootstrap.bundle.min.js',
     'node_modules/admin-lte/dist/js/adminlte.min.js',
 ])
+@include('sweetalert::alert')
+
 </body>
 </html>
 

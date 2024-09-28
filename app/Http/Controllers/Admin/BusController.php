@@ -7,6 +7,7 @@ use App\Models\Bus;
 use App\Models\Point;
 use Illuminate\Http\Request;
 
+use RealRashid\SweetAlert\Facades\Alert;
 class BusController extends Controller
 {
     public function index()
@@ -30,6 +31,7 @@ class BusController extends Controller
         ]);
 
         Bus::create($validatedData);
+        Alert::success('Success', 'Bus created successfully.');
         return redirect()->route('admin.buses.index')->with('success', 'Bus created successfully.');
     }
 
@@ -53,12 +55,15 @@ class BusController extends Controller
         ]);
 
         $bus->update($validatedData);
+        Alert::success('Success', 'Bus updated successfully.');
+
         return redirect()->route('admin.buses.index')->with('success', 'Bus updated successfully.');
     }
 
     public function destroy(Bus $bus)
     {
         $bus->delete();
+        Alert::success('Success', 'Bus deleted successfully.');
         return redirect()->route('admin.buses.index')->with('success', 'Bus deleted successfully.');
     }
 }

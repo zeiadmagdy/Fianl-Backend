@@ -7,6 +7,7 @@ use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\EventController;
 use App\Http\Controllers\Api\UserController as ApiUserController;
 use App\Http\Controllers\Api\ForgetPasswordController;
+use App\Http\Controllers\TranslationController;
 
 /*
 |--------------------------------------------------------------------------
@@ -44,3 +45,5 @@ Route::post('/send-reset-otp', [ForgetPasswordController::class, 'sendResetOtp']
 
 Route::post('/verify-otp', [ForgetPasswordController::class, 'verifyOtp']);
 Route::post('/reset-password', [ForgetPasswordController::class, 'resetPassword']);
+
+Route::post('/translate', [TranslationController::class, 'translate']);

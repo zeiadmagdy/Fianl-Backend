@@ -10,8 +10,16 @@ use App\Models\Bus;
 use App\Models\Driver;
 use App\Models\Categories;
 use Carbon\Carbon;
+use App\Services\TranslationService;
+
 class DashboardController extends Controller
 {
+    protected $translationService;
+
+    public function __construct(TranslationService $translationService)
+    {
+        $this->translationService = $translationService;
+    }
     public function index()
     {
         $userCount = User::count();
@@ -19,7 +27,10 @@ class DashboardController extends Controller
         $busCount = Bus::count();
         $driverCount = Driver::count();
         $categoryCount = Categories::count();
-    
+        $text = "Welcome to Eventoria!";
+        $translatedText = $this->translationService->translate($text);
+        // dd($translatedText); // Display DD for testing
+
         $upcomingEvents = Event::where('date', '>=', now())
         ->orderBy('date')
         ->take(3)

@@ -8,43 +8,48 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\RegistrationSuccessMail; 
 
 class AuthController extends Controller
 {
     // Register method
     public function register(Request $request)
-    {
-        // Validate request data
-        $validator = Validator::make($request->all(), [
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:6|confirmed',
+{
+    // Validate request data
+    $validator = Validator::make($request->all(), [
+        'name' => 'required|string|max:255',
+        'email' => 'required|string|email|max:255|unique:users',
+        'password' => 'required|string|min:6|confirmed',
+    ]);
+
+    if ($validator->fails()) {
+        return response()->json(['error' => $validator->messages()], 422);
+    }
+
+    try {
+        // Create the user
+        $user = User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
         ]);
 
-        if ($validator->fails()) {
-            return response()->json(['error' => $validator->messages()], 422);
-        }
+        // Generate Sanctum token for the newly registered user
+        $token = $user->createToken('user-token')->plainTextToken;
 
-        try {
-            // Create the user
-            $user = User::create([
-                'name' => $request->name,
-                'email' => $request->email,
-                'password' => Hash::make($request->password),
-            ]);
+        // Send registration success email
+        Mail::to($user->email)->send(new RegistrationSuccessMail($user));
 
-            // Generate Sanctum token for the newly registered user
-            $token = $user->createToken('user-token')->plainTextToken;
-
-            return response()->json([
-                'message' => 'User registered successfully',
-                'token' => $token,
-                'user' => $user,
-            ], 201); // Should return a 201 status code
-        } catch (\Exception $e) {
-            return response()->json(['error' => 'An error occurred while registering the user'], 500);
-        }
+        return response()->json([
+            'message' => 'User registered successfully',
+            'token' => $token,
+            'user' => $user,
+        ], 201); // Should return a 201 status code
+    } catch (\Exception $e) {
+        return response()->json(['error' => 'An error occurred while registering the user'], 500);
     }
+}
 
     // Login method
     public function login(Request $request)

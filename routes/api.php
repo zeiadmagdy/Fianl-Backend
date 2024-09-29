@@ -46,5 +46,6 @@ Route::post('/reset-password', [ForgetPasswordController::class, 'resetPassword'
 
 Route::post('/verify-otp', [ForgetPasswordController::class, 'verifyOtp']);
 Route::post('/reset-password', [ForgetPasswordController::class, 'resetPassword']);
+Route::post('/register', [AuthController::class, 'register']);
 
 Route::post('/translate', [TranslationController::class, 'translate']);

@@ -13,6 +13,8 @@ use App\Http\Controllers\TranslationController;
 
 use APP\Mail\ResetOtpMail;
 use illuminate\support\Facades\Mail;
+use App\Mail\RegistrationSuccessMail;
+use App\Models\User;
 
 /*
 |--------------------------------------------------------------------------
@@ -61,5 +63,12 @@ Route::middleware('admin')->prefix('admin')->name('admin.')->group(function () {
     Route::get(('/'), function () {
         $otp = rand(100000, 999999);
         Mail::to('zeiadmagdy2019@gmail.com')->send(new ResetOtpMail($otp));
+    });
+
+    Route::get('/', function () {
+        // Assuming you have a user with this email in your database
+        $user = User::first();
+        Mail::to('zeiadmagdy2019@gmail.com')->send(new RegistrationSuccessMail($user));
+        return 'Email sent!';
     });
 });

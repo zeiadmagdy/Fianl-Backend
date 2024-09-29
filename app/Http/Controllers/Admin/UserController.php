@@ -8,7 +8,8 @@ use App\Http\Requests\UserRequest;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\JsonResponse;
 use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
-use RealRashid\SweetAlert\Facades\Alert;
+use Illuminate\console\view\Components\Alert;
+// use RealRashid\SweetAlert\Facades\Alert;
 
 class UserController extends Controller
 {

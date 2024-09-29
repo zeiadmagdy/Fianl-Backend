@@ -16,8 +16,8 @@ class UserRequest extends FormRequest
         $userId = $this->route('user') ? $this->route('user')->id : null; // Get user ID if updating
 
         return [
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users,email,' . $userId,
+            'name' => 'nullable|string|max:255',
+            'email' => 'nullable|string|email|max:255|unique:users,email,' . $userId,
             'password' => 'nullable|string|min:8|confirmed', // Password is nullable for updates
             'profile_image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'location' => 'nullable|string|max:255',

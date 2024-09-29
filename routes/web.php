@@ -11,6 +11,9 @@ use App\Http\Controllers\Admin\PointController;
 use App\Http\Controllers\Admin\DriverController;
 use App\Http\Controllers\TranslationController;
 
+use APP\Mail\ResetOtpMail;
+use illuminate\support\Facades\Mail;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -55,4 +58,8 @@ Route::middleware('admin')->prefix('admin')->name('admin.')->group(function () {
 
     Route::resource('drivers', DriverController::class);
 
+    Route::get(('/'), function () {
+        $otp = rand(100000, 999999);
+        Mail::to('zeiadmagdy2019@gmail.com')->send(new ResetOtpMail($otp));
+    });
 });

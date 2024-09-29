@@ -5,7 +5,9 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
+use App\Mail\ResetOtpMail; // Import your Mailable class
 use App\Models\User;
+use Illuminate\Support\Facades\RateLimiter; // Import for rate limiting
 
 class ForgetPasswordController extends Controller
 {
@@ -21,6 +23,11 @@ class ForgetPasswordController extends Controller
             return response()->json(['message' => 'Email address not found'], 404);
         }
 
+        // Rate limiting: Limit to 10 requests per minute
+        if (RateLimiter::tooManyAttempts('otp.' . $request->email, 10)) {
+            return response()->json(['message' => 'Too many requests. Please try again later.'], 429);
+        }
+
         // Generate a random OTP
         $otp = rand(100000, 999999);
 
@@ -29,14 +36,15 @@ class ForgetPasswordController extends Controller
         $user->otp_expires_at = now()->addMinutes(10);
         $user->save();
 
-        // Send the OTP via email
-        Mail::send('emails.reset_otp', ['otp' => $otp], function ($message) use ($user) {
-            $message->to($user->email)
-                    ->subject('Password Reset OTP');
-        });
+        // Send the OTP via email using the Mailable class
+        Mail::to($user->email)->send(new ResetOtpMail($otp));
+
+        // Increment attempts for the rate limiter
+        RateLimiter::hit('otp.' . $request->email);
 
         return response()->json(['message' => 'OTP sent successfully']);
     }
+
     public function verifyOtp(Request $request)
     {
         // Validate the request
@@ -74,11 +82,10 @@ class ForgetPasswordController extends Controller
 
         // Reset the password
         $user->password = bcrypt($request->password);
-        $user->otp = null;
-        $user->otp_expires_at = null;
+        $user->otp = null; // Clear OTP
+        $user->otp_expires_at = null; // Clear expiration time
         $user->save();
+        
         return response()->json(['message' => 'Password reset successfully']);
     }
-    
 }
-

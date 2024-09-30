@@ -13,12 +13,25 @@
         "vite": "^4.0.0"
     },
     "dependencies": {
+        "@fullcalendar/core": "^6.1.15",
+        "@fullcalendar/daygrid": "^6.1.15",
+        "@fullcalendar/interaction": "^6.1.15",
+        "@fullcalendar/list": "^6.1.15",
+        "@fullcalendar/timegrid": "^6.1.15",
         "@popperjs/core": "^2.11.8",
         "admin-lte": "^3.2.0",
         "bootstrap": "^5.3.3",
+        "bootstrap-calendar": "^0.2.4",
         "flag-icons": "^7.2.3",
         "font-awesome": "^4.7.0",
         "jquery": "^3.7.1",
-        "reset-css": "^5.0.2"
+        "react-big-calendar": "^1.14.1",
+        "reset-css": "^5.0.2",
+        "tui-calendar": "^1.15.3"
+    },
+    "overrides": {
+        "bootstrap-switch": {
+            "bootstrap": "^4.6.1"
+        }
     }
 }

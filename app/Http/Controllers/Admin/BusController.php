@@ -4,10 +4,10 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Bus;
-use App\Models\Point;
+use App\Models\BusPoint;
 use Illuminate\Http\Request;
-
 use RealRashid\SweetAlert\Facades\Alert;
+
 class BusController extends Controller
 {
     public function index()
@@ -66,4 +66,14 @@ class BusController extends Controller
         Alert::success('Success', 'Bus deleted successfully.');
         return redirect()->route('admin.buses.index')->with('success', 'Bus deleted successfully.');
     }
+
+    // New method to get the points of a specific bus via API
+    // public function getBusPoints($busId)
+    // {
+    //     $points = BusPoint::where('bus_id', $busId)
+    //                 ->orderBy('arrived_time', 'asc')
+    //                 ->get(['name', 'latitude', 'longitude', 'arrived_time']);
+                    
+    //     return response()->json($points); // Return points as JSON
+    // }
 }

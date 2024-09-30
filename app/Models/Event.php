@@ -21,7 +21,9 @@ class Event extends Model
         'capacity',
         'location',
         'event_image',
-        'category_id', // Foreign key to categories table
+        'category_id',// Foreign key to categories table
+        'start_time',        // Start date (DATETIME)
+        'end_time',          // End date (DATETIME)
     ];
 
     /**

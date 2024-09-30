@@ -12,6 +12,12 @@
         </a>
     </li>
     <li class="nav-item">
+        <a href="{{ route('admin.calendar.index') }}" class="nav-link">
+            <i class="nav-icon fas fa-calendar-alt"></i>
+            <p>Calendar</p>
+        </a>
+    </li>
+    <li class="nav-item">
         <a href="{{ route('admin.events.index') }}" class="nav-link">
             <i class="nav-icon fas fa-calendar"></i>
             <p>Events</p>

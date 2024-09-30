@@ -8,7 +8,9 @@ use App\Http\Requests\UserRequest;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\JsonResponse;
 use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
-use Illuminate\console\view\Components\Alert;
+use Illuminate\console\view\Components\success;
+use RealRashid\SweetAlert\Facades\Alert;
+use Illuminate\Http\Request;
 // use RealRashid\SweetAlert\Facades\Alert;
 
 class UserController extends Controller
@@ -42,7 +44,7 @@ class UserController extends Controller
         if ($request->hasFile('profile_image')) {
             $uploadedFileUrl = Cloudinary::upload($request->file('profile_image')->getRealPath())->getSecurePath();
             $profile_image_url = $uploadedFileUrl;
-            
+
         }
 
         User::create([
@@ -119,22 +121,22 @@ class UserController extends Controller
             $user->location = $request->location;
             $userNeedsUpdate = true;
         }
-    
+
         if ($request->gender !== $user->gender) {
             $user->gender = $request->gender;
             $userNeedsUpdate = true;
         }
-    
+
         if ($request->bio !== $user->bio) {
             $user->bio = $request->bio;
             $userNeedsUpdate = true;
         }
-    
+
         if ($request->birth_date !== $user->birth_date) {
             $user->birth_date = $request->birth_date;
             $userNeedsUpdate = true;
         }
-    
+
         if ($request->is_admin !== $user->is_admin) {
             $user->is_admin = $request->is_admin;
             $userNeedsUpdate = true;
@@ -199,6 +201,24 @@ class UserController extends Controller
         return response()->json($user); // Return user data as JSON
     }
 
+    /** 
+     * @var App\Models\User
+     **/
+    public function getUserEvents(Request $request)
+    {
+        // Get the authenticated user
+        $user = auth()->user();
+
+        if (!$user) {
+            return response()->json(['message' => 'No authenticated user found'], 401);
+        }
+
+        $events = $user->events()->with('category')->get();
+
+        return response()->json($events, 200);
+
+        dd(auth()->user());
+    }
 
 
 

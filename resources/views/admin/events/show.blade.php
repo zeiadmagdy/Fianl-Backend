@@ -16,6 +16,7 @@
                 <p><strong>Location:</strong> {{ $event->location }}</p>
                 <p><strong>Capacity:</strong> {{ $event->capacity }}</p>
                 <p><strong>Category:</strong> {{ $event->category->name }}</p>
+                <P><strong>Attendees:</strong>{{ $event->attendees->count() }}</P>
 
                 <a href="{{ route('admin.events.index') }}" class="btn btn-primary mt-3">Back to Events</a>
             </div>
@@ -23,7 +24,8 @@
             <!-- Image Section -->
             <div class="ms-3" style="align-self: flex-end;">
                 @if($event->event_image)
-                    <img src="{{ $event->event_image }}" alt="Event Image" class="img-fluid" style="max-width: 150px; height: auto;">
+                    <img src="{{ $event->event_image }}" alt="Event Image" class="img-fluid"
+                        style="max-width: 150px; height: auto;">
                 @else
                     <div class="text-muted">No Image</div>
                 @endif

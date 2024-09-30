@@ -3,12 +3,12 @@
 namespace App\Models;
 
 use Illuminate\Contracts\Auth\MustVerifyEmail;
-
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-
 use Laravel\Sanctum\HasApiTokens;
+
+use App\Models\Event;
 
 class User extends Authenticatable
 {
@@ -45,8 +45,12 @@ class User extends Authenticatable
     /**
      * Define a relationship where a user can attend many events.
      */
+
+
     public function events()
     {
-        return $this->belongsToMany(Event::class, 'events_users'); // Use 'users_events' as the pivot table
+        return $this->belongsToMany(Event::class, 'event_user', 'user_id', 'event_id')->withTimestamps();
     }
+
+
 }

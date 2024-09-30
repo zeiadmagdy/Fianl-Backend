@@ -4,11 +4,13 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Event;
-use App\Models\Categories;  // Include the Categories model
+use App\Models\Categories;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 use RealRashid\SweetAlert\Facades\Alert;
+use App\Models\User;
+
 class EventController extends Controller
 {
     public function index(Request $request)
@@ -89,7 +91,7 @@ class EventController extends Controller
             // Remove old image from Cloudinary if it exists
             if ($event->event_image) {
                 // Extract public ID from URL for deletion
-                $publicId = basename($event->event_image, '.'.$event->event_image->getExtension());
+                $publicId = basename($event->event_image, '.' . pathinfo($event->event_image, PATHINFO_EXTENSION));
                 Cloudinary::destroy($publicId);
             }
             // Upload the new image
@@ -105,12 +107,12 @@ class EventController extends Controller
     }
 
     public function destroy(Event $event)
-    {    
+    {
         if ($event->event_image) {
-        // Remove old image from Cloudinary if it exists
-        $publicId = basename($event->event_image, '.'.$event->event_image->getExtension());
-        Cloudinary::destroy($publicId);
-    }
+            // Remove old image from Cloudinary if it exists
+            $publicId = basename($event->event_image, '.' . pathinfo($event->event_image, PATHINFO_EXTENSION));
+            Cloudinary::destroy($publicId);
+        }
         $event->delete();
 
         Alert::success('Success', 'Event deleted successfully.');
@@ -120,15 +122,32 @@ class EventController extends Controller
 
     public function attendEvent(Request $request, $eventId)
     {
-        $event = Event::findOrFail($eventId);
-        $user = Auth::user();
-
-        if ($event->attendees()->where('user_id', $user->id)->exists()) {
-            $event->attendees()->detach($user->id);
-            return response()->json(['message' => 'You have successfully left the event.'], 200);
+        $user = auth()->user(); // Get the authenticated user
+        $event = Event::findOrFail($eventId); // Find the event
+    
+        // Check if the user is already attending
+        $attendance = $event->attendees()->where('user_id', $user->id)->first();
+    
+        if ($attendance) {
+            // User is currently attending, so we will leave the event
+            $event->attendees()->detach($user->id); // Remove user from attendees
+            return response()->json(['message' => 'You are no longer attending the event.'], 200);
         } else {
-            $event->attendees()->attach($user->id);
+            // User is not attending, so we will attend the event
+            $event->attendees()->attach($user->id); // Add user to attendees
             return response()->json(['message' => 'You are now attending the event.'], 200);
         }
     }
+    
+    
+
+    public function getEventAttendeesCount($eventId)
+    {
+        $event = Event::findOrFail($eventId);
+        $attendeesCount = $event->attendees()->count();
+
+        return response()->json(['attendees_count' => $attendeesCount], 200);
+    }
+
+
 }

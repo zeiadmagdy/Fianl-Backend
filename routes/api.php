@@ -49,3 +49,12 @@ Route::post('/reset-password', [ForgetPasswordController::class, 'resetPassword'
 Route::post('/register', [AuthController::class, 'register']);
 
 Route::post('/translate', [TranslationController::class, 'translate']);
+
+Route::post('/admin/events/{eventId}/attend', [EventController::class, 'attendEvent']);
+Route::get('/events/{eventId}/attendees-count', [EventController::class, 'getEventAttendeesCount']);
+
+Route::middleware('auth:sanctum')->group(function () {
+    Route::post('events/{id}/attend', [EventController::class, 'attendEvent']);
+});
+
+Route::middleware('auth:sanctum')->get('user/events', [UserController::class, 'getUserEvents']);

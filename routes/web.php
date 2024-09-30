@@ -71,4 +71,8 @@ Route::middleware('admin')->prefix('admin')->name('admin.')->group(function () {
         Mail::to('zeiadmagdy2019@gmail.com')->send(new RegistrationSuccessMail($user));
         return 'Email sent!';
     });
+
+
+
 });
+

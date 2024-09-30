@@ -20,6 +20,14 @@
             <button type="button" id="search-btn" class="btn btn-primary mt-2">Search</button>
         </div>
 
+        <!-- Dropdown to display search results -->
+        <div class="mb-3">
+            <label for="search-results" class="form-label">Select a Location</label>
+            <select class="form-select" id="search-results">
+                <option selected>Select a location from the search results</option>
+            </select>
+        </div>
+
         <!-- Leaflet map for point selection -->
         <div class="mb-3">
             <label for="map" class="form-label">Select Point on Map</label>
@@ -102,10 +110,17 @@
             fetch(apiURL)
                 .then(response => response.json())
                 .then(data => {
+                    var searchResults = document.getElementById('search-results');
+                    searchResults.innerHTML = ''; // Clear previous results
                     if (data.length > 0) {
-                        var lat = data[0].lat;
-                        var lon = data[0].lon;
-                        placeMarker(lat, lon);  // Place marker at the first search result
+                        data.forEach(function (result, index) {
+                            var option = document.createElement('option');
+                            option.value = index;
+                            option.text = `${result.display_name} (Lat: ${result.lat}, Lon: ${result.lon})`;
+                            option.setAttribute('data-lat', result.lat);
+                            option.setAttribute('data-lon', result.lon);
+                            searchResults.appendChild(option);
+                        });
                     } else {
                         alert('Location not found.');
                     }
@@ -114,6 +129,16 @@
                     console.error('Error fetching location data:', error);
                     alert('An error occurred while searching for the location.');
                 });
+        });
+
+        // Event listener for the search result selection
+        document.getElementById('search-results').addEventListener('change', function () {
+            var selectedOption = this.options[this.selectedIndex];
+            var lat = selectedOption.getAttribute('data-lat');
+            var lon = selectedOption.getAttribute('data-lon');
+            if (lat && lon) {
+                placeMarker(lat, lon); // Place marker at the selected search result
+            }
         });
     });
 </script>

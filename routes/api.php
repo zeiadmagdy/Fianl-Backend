@@ -8,6 +8,11 @@ use App\Http\Controllers\Admin\EventController;
 use App\Http\Controllers\Api\UserController as ApiUserController;
 use App\Http\Controllers\Api\ForgetPasswordController;
 use App\Http\Controllers\TranslationController;
+use App\Http\Controllers\Api\PointsController;
+use App\Http\Controllers\Api\BusController;
+
+
+
 
 /*
 |--------------------------------------------------------------------------
@@ -23,9 +28,14 @@ use App\Http\Controllers\TranslationController;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+
+Route::middleware('auth:sanctum')->get('/bus/{busId}/points', [BusController::class, 'getBusPoints']);
+
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('user', [ApiUserController::class, 'view']);
     Route::put('/user', [ApiUserController::class, 'update']); // PUT method for updating
+    
 
 });
 Route::get('/login', [AuthController::class, 'login'])->name('login');
@@ -49,3 +59,8 @@ Route::post('/reset-password', [ForgetPasswordController::class, 'resetPassword'
 Route::post('/register', [AuthController::class, 'register']);
 
 Route::post('/translate', [TranslationController::class, 'translate']);
+
+
+use App\Http\Controllers\Api\ExampleController;
+
+Route::get('/trigger-error', [ExampleController::class, 'triggerError']);

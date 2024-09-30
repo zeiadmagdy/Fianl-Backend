@@ -17,13 +17,13 @@ class PointController extends Controller
 
     public function store(Request $request, Bus $bus)
     {
-        // dd($request->all());  
-        \Log::info($request->all()); // Log the request data
+        // Log the request data
+        \Log::info($request->all());  
 
         $validatedData = $request->validate([
             'name' => 'required|string|max:255',
-            'latitude' => 'required|numeric',   // Validate latitude
-            'longitude' => 'required|numeric',  // Validate longitude
+            'latitude' => 'required|numeric',   
+            'longitude' => 'required|numeric',  
             'description' => 'nullable|string',
             'arrived_time' => 'required|date_format:H:i',
         ]);
@@ -34,14 +34,13 @@ class PointController extends Controller
         Alert::success('Success', 'Point added successfully.');
         return redirect()->route('admin.buses.show', $bus)->with('success', 'Point added successfully.');
     }
-    // Method for editing a point
+
     public function edit($id)
     {
-        $point = Point::findOrFail($id);  // Fetch the point by ID
-        return view('admin.points.edit', compact('point'));  // Load the edit view with the point data
+        $point = Point::findOrFail($id);
+        return view('admin.points.edit', compact('point'));
     }
 
-    // Method for updating a point
     public function update(Request $request, $id)
     {
         $request->validate([
@@ -52,30 +51,44 @@ class PointController extends Controller
             'arrived_time' => 'required|date_format:H:i',
         ]);
 
-        $point = Point::findOrFail($id);  // Fetch the point by ID
-        $point->update([
-            'name' => $request->input('name'),
-            'latitude' => $request->input('latitude'),
-            'longitude' => $request->input('longitude'),
-            'description' => $request->input('description'),
-            'arrived_time' => $request->input('arrived_time'),
-        ]);
+        $point = Point::findOrFail($id);
+        $point->update($request->only(['name', 'latitude', 'longitude', 'description', 'arrived_time']));
 
         Alert::success('Success', 'Point updated successfully.');
-        return redirect()->route('admin.buses.show', $point->bus_id)
-                        ->with('success', 'Point updated successfully');
+        return redirect()->route('admin.buses.show', $point->bus_id)->with('success', 'Point updated successfully');
     }
 
-    // Method for deleting a point
     public function destroy($id)
     {
-        $point = Point::findOrFail($id);  // Fetch the point by ID
-        $bus_id = $point->bus_id;  // Get the bus ID for redirection
-        $point->delete();  // Delete the point
+        $point = Point::findOrFail($id);
+        $bus_id = $point->bus_id;
+        $point->delete();
 
         Alert::success('Success', 'Point deleted successfully.');
-
-        return redirect()->route('admin.buses.show', $bus_id)
-                        ->with('success', 'Point deleted successfully');
+        return redirect()->route('admin.buses.show', $bus_id)->with('success', 'Point deleted successfully');
     }
+    public function show($id)
+    {
+        // Find the point by ID or fail
+        $point = Point::findOrFail($id);
+        
+        // Fetch all points related to the specific bus
+        $points = Point::where('bus_id', $point->bus_id)->orderBy('arrived_time', 'asc')->get();
+        
+        // Pass the point and related points to the view
+        return view('admin.points.show', compact('point', 'points'));
+    }
+    
+    
+
+    // public function getBusPoints(Bus $bus)
+    // {
+    //     \Log::info('Fetching points for bus ID: ' . $bus->id);
+
+    //     $points = Point::where('bus_id', $bus->id)
+    //             ->orderBy('arrived_time', 'asc')
+    //             ->get(['name', 'latitude', 'longitude', 'arrived_time']);
+                
+    // return response()->json($points); // Return points as JSON
+    // }
 }

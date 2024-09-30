@@ -11,6 +11,7 @@ use App\Http\Controllers\Admin\PointController;
 use App\Http\Controllers\Admin\DriverController;
 use App\Http\Controllers\TranslationController;
 
+
 use APP\Mail\ResetOtpMail;
 use illuminate\support\Facades\Mail;
 use App\Mail\RegistrationSuccessMail;
@@ -45,6 +46,9 @@ Route::middleware('admin')->prefix('admin')->name('admin.')->group(function () {
     // Dashboard route
     Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard'); // Updated this line
 
+    // Define the route for showing a specific point
+    Route::get('/admin/points/{id}', [PointController::class, 'show'])->name('admin.points.show');
+    
     // User routes (resourceful)
     Route::resource('users', UserController::class);
 

@@ -4,7 +4,7 @@
 
 @section('content')
 <div class="row">
-    <!-- Small boxes (Stat box) -->
+    <!-- Stat Boxes -->
     <div class="col-lg-3 col-6">
         <div class="small-box bg-success">
             <div class="inner">
@@ -73,7 +73,7 @@
     </div>
 </div>
 
-<!-- Upcoming Events Card -->
+<!-- Upcoming Events Section -->
 <div class="row">
     <div class="col-lg-12">
         <div class="card">
@@ -99,4 +99,34 @@
     </div>
 </div>
 
+<!-- Calendar Section -->
+<div class="row">
+    <div class="col-lg-12">
+        <div id="calendar"></div>
+    </div>
+</div>
+
+@endsection
+
+@section('scripts')
+<script src="https://cdn.jsdelivr.net/npm/@fullcalendar/core@6.1.8/index.global.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@fullcalendar/daygrid@6.1.8/index.global.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@fullcalendar/interaction@6.1.8/index.global.min.js"></script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    var calendarEl = document.getElementById('calendar');
+
+    var calendar = new FullCalendar.Calendar(calendarEl, {
+        initialView: 'dayGridMonth',
+        events: '/api/eventss', // Use the correct endpoint here
+        editable: false,
+        eventClick: function(info) {
+            alert('Event: ' + info.event.title + '\nDescription: ' + info.event.extendedProps.description);
+        }
+    });
+
+    calendar.render();
+});
+</script>
 @endsection

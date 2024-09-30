@@ -10,6 +10,7 @@ use App\Http\Controllers\Admin\BusController;
 use App\Http\Controllers\Admin\PointController;
 use App\Http\Controllers\Admin\DriverController;
 use App\Http\Controllers\TranslationController;
+use App\Http\Controllers\Admin\CalendarController;
 
 
 use APP\Mail\ResetOtpMail;
@@ -45,6 +46,9 @@ Route::middleware('admin')->prefix('admin')->name('admin.')->group(function () {
 
     // Dashboard route
     Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard'); // Updated this line
+
+     // Calendar route
+     Route::get('/calendar', [CalendarController::class, 'index'])->name('calendar.index'); // Add this line for the calendar route
 
     // Define the route for showing a specific point
     Route::get('/admin/points/{id}', [PointController::class, 'show'])->name('admin.points.show');

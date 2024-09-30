@@ -7,7 +7,7 @@ use App\Models\Point;
 use App\Models\Bus;
 use Illuminate\Http\Request;
 
-class PointsController extends Controller
+class PointController extends Controller
 {
     // public function getBusPoints(Bus $bus)
     // {

@@ -1,0 +1,46 @@
+/* General styling for the calendar container */
+#calendar {
+    border: 3px solid #007bff; /* Blue border around the entire calendar */
+    border-radius: 10px; /* Rounded corners */
+    overflow: hidden; /* Ensure that content does not overflow the rounded corners */
+    transition: transform 0.3s ease; /* Smooth transform on hover */
+}
+
+/* Hover effect for the whole calendar */
+#calendar:hover {
+    transform: scale(1.02); /* Slightly scale up on hover */
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2); /* Add a shadow on hover */
+}
+
+/* General styling for all calendar events */
+.fc .fc-event {
+    border: 2px solid #ccc; /* Light grey border for events */
+    border-radius: 5px; /* Rounded corners for events */
+    padding: 5px; /* Add some padding */
+    transition: background-color 0.2s, border-color 0.2s; /* Smooth transition for background and border */
+}
+
+/* Hover effect for calendar cells */
+.fc .fc-day:hover {
+    background-color: rgba(0, 123, 255, 0.2); /* Light blue background on hover */
+    cursor: pointer; /* Change cursor to pointer */
+}
+
+/* Past events */
+.event-past {
+    background-color: red !important; /* Red for past events */
+    color: white; /* White text for contrast */
+}
+
+/* Future events */
+.event-future {
+    background-color: green !important; /* Green for future events */
+    color: white; /* White text for contrast */
+}
+
+/* Add hover effects for events */
+.fc .fc-event:hover {
+    border-color: #888; /* Darker border on hover */
+    transform: scale(1.05); /* Slightly scale up on hover */
+    cursor: pointer; /* Change cursor to pointer */
+}

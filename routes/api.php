@@ -4,8 +4,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Admin\UserController;
-use App\Http\Controllers\Admin\EventController;
 use App\Http\Controllers\Api\UserController as ApiUserController;
+use App\Http\Controllers\Admin\EventController;
+use App\Http\Controllers\Api\EventController as ApiEventController;
 use App\Http\Controllers\Api\ForgetPasswordController;
 use App\Http\Controllers\TranslationController;
 use App\Http\Controllers\Api\PointsController;
@@ -48,7 +49,7 @@ Route::get('/users/{id}', [UserController::class, 'getUserById']);
 
 Route::get('/events', [EventController::class, 'index']);
 Route::get('/events/{id}', [EventController::class, 'show']);
-
+Route::get('/eventss', [ApiEventController::class, 'getCalendarEvents']);
 
 Route::post('/send-reset-otp', [ForgetPasswordController::class, 'sendResetOtp']);
 Route::post('/verify-otp', [ForgetPasswordController::class, 'verifyOtp']);

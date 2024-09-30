@@ -217,7 +217,6 @@ class UserController extends Controller
 
         return response()->json($events, 200);
 
-        dd(auth()->user());
     }
 
 

@@ -12,6 +12,7 @@ use App\Http\Controllers\TranslationController;
 use App\Http\Controllers\Api\PointsController;
 use App\Http\Controllers\Api\BusController;
 use App\Http\Controllers\Api\ExampleController;
+use App\Http\Controllers\Api\NotificationController;
 
 
 
@@ -37,6 +38,8 @@ Route::middleware('auth:sanctum')->get('/bus/{busId}/points', [BusController::cl
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('user', [ApiUserController::class, 'view']);
     Route::put('/user', [ApiUserController::class, 'update']); // PUT method for updating
+    Route::get('/notifications', [NotificationController::class, 'getNotifications']);
+
     
 
 });

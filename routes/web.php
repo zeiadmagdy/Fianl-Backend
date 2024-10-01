@@ -9,7 +9,7 @@ use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\BusController;
 use App\Http\Controllers\Admin\PointController;
 use App\Http\Controllers\Admin\DriverController;
-use App\Http\Controllers\TranslationController;
+// use App\Http\Controllers\TranslationController;
 use App\Http\Controllers\Admin\CalendarController;
 
 
@@ -35,7 +35,7 @@ Route::get('/', function () {
 });
 
 // Translation
-Route::post('/translate', [TranslationController::class, 'translate'])->name('translate');
+// Route::post('/translate', [TranslationController::class, 'translate'])->name('translate');
 
 // Admin login routes
 Route::get('/admin/login', [AdminController::class, 'showLoginForm'])->name('admin.login');

@@ -64,7 +64,7 @@ Route::post('/verify-otp', [ForgetPasswordController::class, 'verifyOtp']);
 Route::post('/reset-password', [ForgetPasswordController::class, 'resetPassword']);
 Route::post('/register', [AuthController::class, 'register']);
 
-Route::post('/translate', [TranslationController::class, 'translate']);
+// Route::post('/translate', [TranslationController::class, 'translate']);
 
 Route::post('/admin/events/{eventId}/attend', [EventController::class, 'attendEvent']);
 Route::get('/events/{eventId}/attendees-count', [EventController::class, 'getEventAttendeesCount']);

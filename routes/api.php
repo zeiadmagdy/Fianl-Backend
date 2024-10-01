@@ -50,7 +50,7 @@ Route::get('/users/{id}', [UserController::class, 'getUserById']);
 
 Route::get('/events', [EventController::class, 'index']);
 Route::get('/events/{id}', [EventController::class, 'show']);
-Route::get('/events', [ApiEventController::class, 'getCalendarEvents']);
+Route::get('/eventss', [ApiEventController::class, 'getCalendarEvents']);
 
 Route::post('/send-reset-otp', [ForgetPasswordController::class, 'sendResetOtp']);
 Route::post('/verify-otp', [ForgetPasswordController::class, 'verifyOtp']);

@@ -9,7 +9,7 @@
 
     <!-- Center title with logo -->
     <div class="navbar-brand mx-auto">
-        <img src="{{ asset('images/logo.png') }}" alt="Logo" style="height: 40px; margin-right: 10px;">
+        <img src="{{ asset('images/logo.png') }}" alt="Logo" style="height: 90px; margin-top: -5px;">
         <span class="navbar-title">Admin Panel</span>
     </div>
 

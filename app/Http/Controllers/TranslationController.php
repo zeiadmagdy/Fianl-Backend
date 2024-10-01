@@ -3,39 +3,25 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Services\TranslationService;
+use Illuminate\Support\Facades\Http;
 
 class TranslationController extends Controller
 {
-    protected $translationService;
-
-    public function __construct(TranslationService $translationService)
-    {
-        $this->translationService = $translationService;
-    }
-
     /**
-     * Handle translation requests from the front-end.
+     * Handle translation requests.
      *
-     * @param \Illuminate\Http\Request $request
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\JsonResponse
      */
     public function translate(Request $request)
     {
-        // Validate the incoming request
-        $request->validate([
-            'text' => 'required|string',
+        // Use Http::post instead of a translator service
+        $response = Http::post(env('TRANSLATION_API_URL'), [
+            'q' => $request->input('q'),
+            'source' => $request->input('source'),
+            'target' => $request->input('target'),
         ]);
 
-        // Get the text to translate
-        $text = $request->input('text');
-
-        // Translate the text using the TranslationService
-        $translatedText = $this->translationService->translate($text);
-
-        // Return the translated text as a JSON response
-        return response()->json([
-            'translatedText' => $translatedText,
-        ]);
+        return response()->json($response->json());
     }
 }

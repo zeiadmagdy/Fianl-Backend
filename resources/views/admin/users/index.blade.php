@@ -3,10 +3,15 @@
 @section('title', 'Users')
 
 @section('content')
-<h1 class="mb-3 animated-heading" style="text-align: center; display: inline-block; font-weight: bold;">Users Table</h1> <br>
-
-<a href="{{ route('admin.users.create') }}" class="btn btn-primary mb-3">Add User</a>
-<a href="{{ route('admin.dashboard') }}" class="btn btn-primary mb-3">Back to Dashboard</a>
+<div class="row">
+    <div class="col-12">
+        <div class="card"> 
+            <div class="card-header">
+                    <h1 class="animated-heading" style="text-align: center;font-weight: bold;">Users Table</h1>
+                    <a href="{{ route('admin.users.create') }}" class="btn btn-primary float-right">Add User</a>
+                    <a href="{{ route('admin.dashboard') }}" class="btn btn-primary float-left">Back to Dashboard</a>
+            </div>
+            <div class="card-body">
 
 <form action="{{ route('admin.users.index') }}" method="GET" class="mb-3">
     <div class="form-row">
@@ -29,7 +34,7 @@
     </div>
 </form>
 <!-- Table to list users -->
-<table class="table">
+<table class="table table-bordered">
     <thead>
         <tr>
             <th>ID</th>
@@ -87,6 +92,11 @@
         @endforeach
     </tbody>
 </table>
+
+</div>
+</div>
+</div>
+</div>
 @endsection
 
 <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script> <!-- Font Awesome for icons -->

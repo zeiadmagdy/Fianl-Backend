@@ -9,12 +9,9 @@ use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\BusController;
 use App\Http\Controllers\Admin\PointController;
 use App\Http\Controllers\Admin\DriverController;
-// use App\Http\Controllers\TranslationController;
 use App\Http\Controllers\Admin\CalendarController;
-
-
-use APP\Mail\ResetOtpMail;
-use illuminate\support\Facades\Mail;
+use App\Mail\ResetOtpMail;
+use Illuminate\Support\Facades\Mail;
 use App\Mail\RegistrationSuccessMail;
 use App\Models\User;
 
@@ -34,9 +31,6 @@ Route::get('/', function () {
     return view('admin.login');
 });
 
-// Translation
-// Route::post('/translate', [TranslationController::class, 'translate'])->name('translate');
-
 // Admin login routes
 Route::get('/admin/login', [AdminController::class, 'showLoginForm'])->name('admin.login');
 Route::post('/admin/login', [AdminController::class, 'login'])->name('admin.login.post');
@@ -45,49 +39,44 @@ Route::post('/admin/login', [AdminController::class, 'login'])->name('admin.logi
 Route::middleware('admin')->prefix('admin')->name('admin.')->group(function () {
 
     // Dashboard route
-    Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard'); // Updated this line
+    Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
-     // Calendar route
-     Route::get('/calendar', [CalendarController::class, 'index'])->name('calendar.index'); // Add this line for the calendar route
+    // Calendar route
+    Route::get('/calendar', [CalendarController::class, 'index'])->name('calendar.index');
 
-    // Define the route for showing a specific point
-    Route::get('/admin/points/{id}', [PointController::class, 'show'])->name('admin.points.show');
-    
     // User routes (resourceful)
     Route::resource('users', UserController::class);
 
     // Event routes (resourceful)
     Route::resource('events', EventController::class);
-    
+
     // Attendees list for an event (for popup)
     Route::get('events/{event}/attendees', [EventController::class, 'getEventAttendees'])->name('events.attendees');
 
-    // Route to filter events by category, and search by name/date
+    // Route to filter events by category and search by name/date
     Route::get('events/filter', [EventController::class, 'filterEvents'])->name('events.filter');
 
-
+    // Category routes (resourceful)
     Route::resource('categories', CategoryController::class);
 
     // Bus routes (resourceful)
     Route::resource('buses', BusController::class);
-
     Route::resource('buses.points', PointController::class)->shallow(); // nested resource
 
+    // Driver routes (resourceful)
     Route::resource('drivers', DriverController::class);
 
-    Route::get(('/'), function () {
+    // Email sending routes for OTP and registration success
+    Route::get('/send-otp', function () {
         $otp = rand(100000, 999999);
         Mail::to('zeiadmagdy2019@gmail.com')->send(new ResetOtpMail($otp));
-    });
+        return 'OTP email sent!';
+    })->name('send.otp');
 
-    Route::get('/', function () {
-        // Assuming you have a user with this email in your database
-        $user = User::first();
+    Route::get('/send-registration-mail', function () {
+        $user = User::first(); // Assuming you have a user in your database
         Mail::to('zeiadmagdy2019@gmail.com')->send(new RegistrationSuccessMail($user));
-        return 'Email sent!';
-    });
-
-
+        return 'Registration success email sent!';
+    })->name('send.registration.mail');
 
 });
-

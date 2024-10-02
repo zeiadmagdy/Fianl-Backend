@@ -18,10 +18,24 @@ class UserController extends Controller
      *
      * @return \Illuminate\View\View
      */
-    public function index()
+    public function index(Request $request)
     {
         // Eager load events attended by users
-        $users = User::with('attendedEvents')->get();
+        $query = User::query()->with('attendedEvents');
+
+        if ($request->filled('name')) {
+            $query->where('name', 'like', '%' . $request->name . '%');
+        }
+    
+        if ($request->filled('email')) {
+            $query->where('email', 'like', '%' . $request->email . '%');
+        }
+    
+        if ($request->filled('role')) {
+            $query->where('is_admin', $request->role === 'admin' ? 1 : 0);
+        }
+    
+        $users = $query->get();
         return view('admin.users.index', compact('users'));
     }
 

@@ -34,8 +34,9 @@ Route::middleware('auth:sanctum')->get('/bus/{busId}/points', [BusController::cl
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('user', [ApiUserController::class, 'view']);
-    Route::put('/user', [ApiUserController::class, 'update']); // PUT method for updating
+    Route::put('user', [ApiUserController::class, 'update']); // PUT method for updating
     Route::get('/notifications', [NotificationController::class, 'getNotifications']);
+    Route::post('user/{user}/profile-image', [ApiUserController::class, 'uploadProfileImage']);
 });
 
 Route::get('/login', [AuthController::class, 'login'])->name('login');

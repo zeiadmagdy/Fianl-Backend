@@ -58,6 +58,13 @@ Route::middleware('admin')->prefix('admin')->name('admin.')->group(function () {
 
     // Event routes (resourceful)
     Route::resource('events', EventController::class);
+    
+    // Attendees list for an event (for popup)
+    Route::get('events/{event}/attendees', [EventController::class, 'getEventAttendees'])->name('events.attendees');
+
+    // Route to filter events by category, and search by name/date
+    Route::get('events/filter', [EventController::class, 'filterEvents'])->name('events.filter');
+
 
     Route::resource('categories', CategoryController::class);
 

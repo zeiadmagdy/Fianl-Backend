@@ -14,17 +14,38 @@ use App\Models\User;
 class EventController extends Controller
 {
     public function index(Request $request)
-    {
-        $events = Event::with('category')->get();
+{
+    $query = Event::with('category', 'attendees');
 
-        // Return JSON response if requested from an API
-        if ($request->expectsJson()) {
-            return response()->json($events, 200);
-        }
-
-        // Otherwise, return the view (Web)
-        return view('admin.events.index', compact('events'));
+    // Search filters
+    if ($request->search_name) {
+        $query->where('name', 'like', '%' . $request->search_name . '%');
     }
+
+    if ($request->search_date) {
+        $query->whereDate('date', $request->search_date);
+    }
+
+    if ($request->category_filter) {
+        $query->where('category_id', $request->category_filter);
+    }
+
+    // Sorting logic
+    if ($request->has('sort_by')) {
+        $query->orderBy($request->sort_by, 'asc');
+    }
+
+    $events = $query->get();
+
+    $categories = Categories::all();
+
+    if ($request->expectsJson()) {
+        return response()->json($events, 200);
+    }
+
+    return view('admin.events.index', compact('events', 'categories'));
+}
+
 
     public function create()
     {
@@ -149,5 +170,9 @@ class EventController extends Controller
         return response()->json(['attendees_count' => $attendeesCount], 200);
     }
 
-
+    public function getEventAttendees($id)
+    {
+        $event = Event::with('attendees')->findOrFail($id);
+        return response()->json(['attendees' => $event->attendees]);
+    }
 }

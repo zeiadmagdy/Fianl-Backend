@@ -17,9 +17,8 @@
         'node_modules/@fullcalendar/core/main.min.css',
         'node_modules/@fullcalendar/daygrid/main.min.css'
     ])
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 
 <body class="hold-transition">
@@ -43,17 +42,18 @@
 
     <!-- Vite will load JS dependencies -->
     @vite([
-        'node_modules/admin-lte/plugins/jquery/jquery.min.js',
-        'node_modules/admin-lte/plugins/bootstrap/js/bootstrap.bundle.min.js',
+        'node_modules/admin-lte/plugins/jquery/jquery.min.js',  // This includes jQuery
+        'node_modules/admin-lte/plugins/bootstrap/js/bootstrap.bundle.min.js', // This includes Bootstrap
         'node_modules/admin-lte/dist/js/adminlte.min.js',
         'node_modules/@fullcalendar/core/main.min.js',
         'node_modules/@fullcalendar/daygrid/main.min.js',
         'node_modules/@fullcalendar/interaction/main.min.js'
     ])
-    
+
     @include('sweetalert::alert')
+
+    <!-- Popper.js is only needed if you are using Bootstrap tooltips or popovers -->
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="path/to/your/app.js"></script>
+    <!-- Note: The Bootstrap bundle already includes Popper.js -->
 </body>
 </html>

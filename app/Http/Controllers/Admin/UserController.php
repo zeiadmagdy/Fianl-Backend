@@ -8,10 +8,8 @@ use App\Http\Requests\UserRequest;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\JsonResponse;
 use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
-use Illuminate\console\view\Components\success;
 use RealRashid\SweetAlert\Facades\Alert;
 use Illuminate\Http\Request;
-// use RealRashid\SweetAlert\Facades\Alert;
 
 class UserController extends Controller
 {
@@ -22,7 +20,8 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = User::all();
+        // Eager load events attended by users
+        $users = User::with('attendedEvents')->get();
         return view('admin.users.index', compact('users'));
     }
 
@@ -34,36 +33,30 @@ class UserController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Http\Requests\UserRequest  $request
      * @return \Illuminate\Http\Response
      */
     public function store(UserRequest $request)
     {
-        // Handle file upload to Cloudinary
-        $profile_image_url = null;
-        if ($request->hasFile('profile_image')) {
-            $uploadedFileUrl = Cloudinary::upload($request->file('profile_image')->getRealPath())->getSecurePath();
-            $profile_image_url = $uploadedFileUrl;
-
-        }
+        // Handle file upload
+        $profile_image_url = $request->hasFile('profile_image') ? $this->handleProfileImage($request->file('profile_image')) : null;
 
         User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'profile_image' => $profile_image_url, // Store profile image URL
-            'location' => $request->location ?? null, // Set default value
-            'gender' => $request->gender ?? null, // Set default value
-            'bio' => $request->bio ?? null, // Set default value
-            'birth_date' => $request->birth_date ?? null, // Set default value
-            'is_admin' => $request->is_admin ?? 0, // Set default value
+            'profile_image' => $profile_image_url, 
+            'location' => $request->location ?? null, 
+            'gender' => $request->gender ?? null, 
+            'bio' => $request->bio ?? null, 
+            'birth_date' => $request->birth_date ?? null,
+            'is_admin' => $request->is_admin ?? 0,
         ]);
 
         Alert::success('Success', 'User created successfully.');
 
         return redirect()->route('admin.users.index')->with('success', 'User created successfully.');
     }
-
 
     /**
      * Show the form for editing the specified resource.
@@ -76,7 +69,6 @@ class UserController extends Controller
         return view('admin.users.edit', compact('user'));
     }
 
-
     /**
      * Update the specified resource in storage.
      *
@@ -88,23 +80,16 @@ class UserController extends Controller
     {
         $userNeedsUpdate = false;
 
-        // Process new profile image
+        // Handle profile image update
         if ($request->hasFile('profile_image')) {
-            // Remove old image if it exists
             if ($user->profile_image) {
                 Cloudinary::destroy($user->profile_image);
             }
-            // Upload the new image
-            $image = $request->file('profile_image');
-            $uploadedFileUrl = Cloudinary::uploadApi()->upload($image->getRealPath(), [
-                'folder' => 'users/',
-                'public_id' => $image->getClientOriginalName(),
-            ])['secure_url'];
-            $user->profile_image = $uploadedFileUrl;
+            $user->profile_image = $this->handleProfileImage($request->file('profile_image'));
             $userNeedsUpdate = true;
         }
 
-        // Process other user details
+        // Update other fields
         if ($request->filled('name') && $request->name !== $user->name) {
             $user->name = $request->name;
             $userNeedsUpdate = true;
@@ -121,42 +106,32 @@ class UserController extends Controller
             $user->location = $request->location;
             $userNeedsUpdate = true;
         }
-
         if ($request->gender !== $user->gender) {
             $user->gender = $request->gender;
             $userNeedsUpdate = true;
         }
-
         if ($request->bio !== $user->bio) {
             $user->bio = $request->bio;
             $userNeedsUpdate = true;
         }
-
         if ($request->birth_date !== $user->birth_date) {
             $user->birth_date = $request->birth_date;
             $userNeedsUpdate = true;
         }
-
         if ($request->is_admin !== $user->is_admin) {
             $user->is_admin = $request->is_admin;
             $userNeedsUpdate = true;
         }
-        // Validate the request
-        $request->validate([
-            'email' => 'sometimes|required|email|unique:users,email,' . $user->id,
-        ]);
 
+        // Save changes if any
         if ($userNeedsUpdate) {
             $user->save();
-
             Alert::success('Success', 'User updated successfully.');
-
-            return redirect()->route('admin.users.index')->with('success', 'User updated successfully.');
+        } else {
+            Alert::warning('Warning', 'No changes were made.');
         }
 
-        Alert::warning('Warning', 'No changes were made.');
-
-        return redirect()->route('admin.users.index')->with('warning', 'No changes were made.');
+        return redirect()->route('admin.users.index')->with('success', 'User updated successfully.');
     }
 
     /**
@@ -168,9 +143,9 @@ class UserController extends Controller
     public function destroy(User $user)
     {
         if ($user->profile_image) {
-            Cloudinary::destroy($user->profile_image); // Assumes Cloudinary public ID stored
+            Cloudinary::destroy($user->profile_image);
         }
-        $user->delete(); // Make sure to delete the user
+        $user->delete();
 
         Alert::success('Success', 'User deleted successfully.');
 
@@ -188,7 +163,6 @@ class UserController extends Controller
         return view('admin.users.show', compact('user'));
     }
 
-
     /**
      * Return a JSON response of the user data with the given ID.
      *
@@ -197,16 +171,18 @@ class UserController extends Controller
      */
     public function getUserById($id): JsonResponse
     {
-        $user = User::findOrFail($id); // Retrieve user by ID
-        return response()->json($user); // Return user data as JSON
+        $user = User::findOrFail($id);
+        return response()->json($user);
     }
 
-    /** 
-     * @var App\Models\User
-     **/
+    /**
+     * Get the events attended by the authenticated user.
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function getUserEvents(Request $request)
     {
-        // Get the authenticated user
         $user = auth()->user();
 
         if (!$user) {
@@ -216,13 +192,16 @@ class UserController extends Controller
         $events = $user->events()->with('category')->get();
 
         return response()->json($events, 200);
-
     }
 
-
-
-
-
-
-
+    /**
+     * Handle file upload to Cloudinary.
+     *
+     * @param \Illuminate\Http\UploadedFile $file
+     * @return string
+     */
+    private function handleProfileImage($file)
+    {
+        return Cloudinary::upload($file->getRealPath())->getSecurePath();
+    }
 }

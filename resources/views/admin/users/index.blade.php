@@ -3,6 +3,8 @@
 @section('title', 'Users')
 
 @section('content')
+<h1 class="mb-3 animated-heading" style="text-align: center; display: inline-block; font-weight: bold;">Users Table</h1> <br>
+
 <a href="{{ route('admin.users.create') }}" class="btn btn-primary mb-3">Add User</a>
 <a href="{{ route('admin.dashboard') }}" class="btn btn-primary mb-3">Back to Dashboard</a>
 
@@ -14,6 +16,8 @@
             <th>Profile Image</th>
             <th>Name</th>
             <th>Email</th>
+            <th>Attended Events</th>
+
             <th>Role</th>
 
             <th>Actions</th>
@@ -32,6 +36,19 @@
                 </td>
                 <td>{{ $user->name }}</td>
                 <td>{{ $user->email }}</td>
+                <td> <!-- Fetch and display attended events -->
+                    @if($user->attendedEvents->isNotEmpty())
+                        <ul>
+                            @foreach($user->attendedEvents as $event)
+                            <li><a href="{{ route('admin.events.show', $event->id) }}">
+                                {{ $event->name }}
+                            </a><br>{{ $event->date }}</li> <!-- Adjust to show desired event fields -->
+                            @endforeach
+                        </ul>
+                    @else
+                        No Events Attended
+                    @endif</td>
+
                 <td>{{ $user->is_admin ? 'Admin' : 'User' }}</td>
 
                 <td>
@@ -73,3 +90,31 @@
         });
     }
     </script>
+
+<style>
+    /* CSS Animation for smooth appearance */
+    .animated-heading {
+      animation: fadeInDown 1s ease-out;
+      color: #333;
+      font-family: 'Roboto', sans-serif;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+    }
+  
+    /* Keyframes for the fade-in-down animation */
+    @keyframes fadeInDown {
+      0% {
+        opacity: 0;
+        transform: translateY(-20px);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  
+    /* Add subtle shadow effect */
+    .animated-heading {
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+    }
+  </style>

@@ -17,7 +17,9 @@
             <li>No events found for this category.</li>
         @else
             @foreach ($events as $event)
-                <li>{{ $event->name }} - {{ $event->date }}</li>
+                <li><a href="{{ route('admin.events.show', $event->id) }}">
+                    {{ $event->name }}
+                </a>{{ $event->date }}</li>
             @endforeach
         @endif
     </ul>

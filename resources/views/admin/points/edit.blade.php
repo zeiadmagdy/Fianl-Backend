@@ -36,10 +36,11 @@
                    value="{{ \Carbon\Carbon::createFromFormat('H:i:s', $point->arrived_time)->format('H:i') }}" required>
         </div>
 
-        <button type="submit" class="btn btn-primary">Update Point</button>
+        <button type="submit" class="btn btn-primary mb-5">Update Point</button>
+        <a href="{{ route('admin.buses.index') }}" class="btn btn-secondary mb-5">Back to Buses</a>
+
     </form>
 
-    <a href="{{ route('admin.buses.index') }}" class="btn btn-secondary mt-3">Back to Buses</a>
 </div>
 
 <!-- Leaflet.js CSS -->

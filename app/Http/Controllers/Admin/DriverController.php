@@ -12,9 +12,20 @@ use RealRashid\SweetAlert\Facades\Alert;
 class DriverController extends Controller
 {
     // Display a listing of the drivers
-    public function index()
+    public function index(Request $request)
     {
-        $drivers = Driver::with('bus')->get(); // Eager loading the bus relation
+        $query = Driver::query()->with('bus');
+
+        if ($request->filled('name')) {
+            $query->where('name', 'like', '%' . $request->name . '%');
+        }
+
+        if ($request->filled('phone_number')) {
+            $query->where('phone_number', 'like', '%' . $request->phone_number . '%');
+        }
+
+        $drivers = $query->get();
+
         return view('admin.drivers.index', compact('drivers'));
     }
 

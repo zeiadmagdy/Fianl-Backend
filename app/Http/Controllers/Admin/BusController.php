@@ -10,11 +10,27 @@ use RealRashid\SweetAlert\Facades\Alert;
 
 class BusController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $buses = Bus::with('points')->get();  // Load buses with their points
+        $query = Bus::query()->with('points');
+
+        if ($request->filled('name')) {
+            $query->where('name', 'like', '%' . $request->name . '%');
+        }
+
+        if ($request->filled('bus_number')) {
+            $query->where('bus_number', $request->bus_number);
+        }
+
+        if ($request->filled('bus_line')) {
+            $query->where('bus_line', 'like', '%' . $request->bus_line . '%');
+        }
+
+        $buses = $query->get();
+
         return view('admin.buses.index', compact('buses'));
     }
+
 
     public function create()
     {

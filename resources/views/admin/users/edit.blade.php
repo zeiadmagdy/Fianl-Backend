@@ -7,11 +7,11 @@
     <div class="card-header">
         <h1 class="animated-heading" style="text-align: center; font-weight: bold;">User Details</h1>
         <a href="{{ route('admin.users.index') }}" class="btn btn-primary float-right">Back to Users</a>
-        <button type="submit" class="btn btn-primary">Update User</button>
+        <button type="button" class="btn btn-primary float-left" onclick="document.getElementById('updateForm').submit();">Update User</button>
     </div>
 
     <div class="card-body">
-        <form action="{{ route('admin.users.update', $user) }}" method="POST" enctype="multipart/form-data">
+        <form id="updateForm" action="{{ route('admin.users.update', $user) }}" method="POST" enctype="multipart/form-data">
             @csrf
             @method('PUT')
 

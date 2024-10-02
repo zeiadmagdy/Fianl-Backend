@@ -7,45 +7,45 @@ use App\Models\Event;
 use App\Models\Categories;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 use RealRashid\SweetAlert\Facades\Alert;
 use App\Models\User;
+use Illuminate\Support\Facades\Validator;
+use Carbon\Carbon;
+use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 
 class EventController extends Controller
 {
     public function index(Request $request)
-{
-    $query = Event::with('category', 'attendees');
+    {
+        $query = Event::with('category', 'attendees');
 
-    // Search filters
-    if ($request->search_name) {
-        $query->where('name', 'like', '%' . $request->search_name . '%');
+        // Search filters
+        if ($request->search_name) {
+            $query->where('name', 'like', '%' . $request->search_name . '%');
+        }
+
+        if ($request->search_date) {
+            $query->whereDate('date', $request->search_date);
+        }
+
+        if ($request->category_filter) {
+            $query->where('category_id', $request->category_filter);
+        }
+
+        // Sorting logic
+        if ($request->has('sort_by')) {
+            $query->orderBy($request->sort_by, 'asc');
+        }
+
+        $events = $query->get();
+        $categories = Categories::all();
+
+        if ($request->expectsJson()) {
+            return response()->json($events, 200);
+        }
+
+        return view('admin.events.index', compact('events', 'categories'));
     }
-
-    if ($request->search_date) {
-        $query->whereDate('date', $request->search_date);
-    }
-
-    if ($request->category_filter) {
-        $query->where('category_id', $request->category_filter);
-    }
-
-    // Sorting logic
-    if ($request->has('sort_by')) {
-        $query->orderBy($request->sort_by, 'asc');
-    }
-
-    $events = $query->get();
-
-    $categories = Categories::all();
-
-    if ($request->expectsJson()) {
-        return response()->json($events, 200);
-    }
-
-    return view('admin.events.index', compact('events', 'categories'));
-}
-
 
     public function create()
     {
@@ -64,6 +64,8 @@ class EventController extends Controller
             'event_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'category_id' => 'required|exists:categories,id',
         ]);
+
+        // Handle image upload
         if ($request->hasFile('event_image')) {
             $uploadedFileUrl = Cloudinary::upload($request->file('event_image')->getRealPath())->getSecurePath();
             $validatedData['event_image'] = $uploadedFileUrl; // Store Cloudinary URL
@@ -72,7 +74,6 @@ class EventController extends Controller
         Event::create($validatedData);
 
         Alert::success('Success', 'Event created successfully.');
-
         return redirect()->route('admin.events.index')->with('success', 'Event created successfully.');
     }
 
@@ -86,12 +87,10 @@ class EventController extends Controller
     {
         $event = Event::with('category')->findOrFail($id);
 
-        // Check if the request expects a JSON response (API)
         if ($request->expectsJson()) {
             return response()->json($event, 200);
         }
 
-        // Otherwise, return the view (Web)
         return view('admin.events.show', compact('event'));
     }
 
@@ -107,37 +106,36 @@ class EventController extends Controller
             'category_id' => 'required|exists:categories,id',
         ]);
 
-        // Process new profile image
+        // Handle image upload
         if ($request->hasFile('event_image')) {
-            // Remove old image from Cloudinary if it exists
             if ($event->event_image) {
-                // Extract public ID from URL for deletion
+                // Remove old image from Cloudinary
                 $publicId = basename($event->event_image, '.' . pathinfo($event->event_image, PATHINFO_EXTENSION));
                 Cloudinary::destroy($publicId);
             }
+
             // Upload the new image
             $uploadedFileUrl = Cloudinary::upload($request->file('event_image')->getRealPath())->getSecurePath();
-            $validatedData['event_image'] = $uploadedFileUrl; // Store Cloudinary URL
+            $validatedData['event_image'] = $uploadedFileUrl;
         }
 
         $event->update($validatedData);
 
         Alert::success('Success', 'Event updated successfully.');
-
         return redirect()->route('admin.events.index')->with('success', 'Event updated successfully.');
     }
 
     public function destroy(Event $event)
     {
         if ($event->event_image) {
-            // Remove old image from Cloudinary if it exists
+            // Remove old image from Cloudinary
             $publicId = basename($event->event_image, '.' . pathinfo($event->event_image, PATHINFO_EXTENSION));
             Cloudinary::destroy($publicId);
         }
+
         $event->delete();
 
         Alert::success('Success', 'Event deleted successfully.');
-
         return redirect()->route('admin.events.index')->with('success', 'Event deleted successfully.');
     }
 
@@ -145,22 +143,20 @@ class EventController extends Controller
     {
         $user = auth()->user(); // Get the authenticated user
         $event = Event::findOrFail($eventId); // Find the event
-    
+
         // Check if the user is already attending
         $attendance = $event->attendees()->where('user_id', $user->id)->first();
-    
+
         if ($attendance) {
-            // User is currently attending, so we will leave the event
-            $event->attendees()->detach($user->id); // Remove user from attendees
+            // User is currently attending, so leave the event
+            $event->attendees()->detach($user->id);
             return response()->json(['message' => 'You are no longer attending the event.'], 200);
         } else {
-            // User is not attending, so we will attend the event
-            $event->attendees()->attach($user->id); // Add user to attendees
+            // User is not attending, so attend the event
+            $event->attendees()->attach($user->id);
             return response()->json(['message' => 'You are now attending the event.'], 200);
         }
     }
-    
-    
 
     public function getEventAttendeesCount($eventId)
     {
@@ -174,5 +170,16 @@ class EventController extends Controller
     {
         $event = Event::with('attendees')->findOrFail($id);
         return response()->json(['attendees' => $event->attendees]);
+    }
+
+    /**
+     * Handle file upload to Cloudinary.
+     *
+     * @param \Illuminate\Http\UploadedFile $file
+     * @return string
+     */
+    private function handleProfileImage($file)
+    {
+        return Cloudinary::upload($file->getRealPath())->getSecurePath();
     }
 }

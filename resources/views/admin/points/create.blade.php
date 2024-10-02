@@ -48,10 +48,10 @@
             <input type="time" class="form-control" id="arrived_time" name="arrived_time" required>
         </div>
 
-        <button type="submit" class="btn btn-primary">Create Point</button>
+        <button type="submit" class="btn btn-primary mb-5">Create Point</button>
+        <a href="{{ route('admin.buses.show', $bus->id) }}" class="btn btn-secondary mb-5">Back to Bus</a>
     </form>
 
-    <a href="{{ route('admin.buses.show', $bus->id) }}" class="btn btn-secondary mt-3">Back to Bus</a>
 </div>
 
 <!-- Leaflet.js CSS -->

@@ -7,7 +7,7 @@
     <div class="card-header">
         <h1 class="animated-heading" style="text-align: center; font-weight: bold;">Edit Event</h1>
         <a href="{{ route('admin.events.index') }}" class="btn btn-primary float-right">Back to Events</a>
-        <button type="submit" class="btn btn-primary">Update Event</button>
+        <button type="button" class="btn btn-primary float-left" onclick="document.getElementById('updateForm').submit();">Update Event</button>
     </div>
 
     <div class="card-body">
@@ -26,7 +26,7 @@
             <div class="alert alert-success">{{ session('success') }}</div>
         @endif
 
-        <form action="{{ route('admin.events.update', $event->id) }}" method="POST" enctype="multipart/form-data">
+        <form id="updateForm" action="{{ route('admin.events.update', $event->id) }}" method="POST" enctype="multipart/form-data">
             @csrf
             @method('PUT')
 

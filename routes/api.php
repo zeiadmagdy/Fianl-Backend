@@ -37,6 +37,13 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::put('user', [ApiUserController::class, 'update']); // PUT method for updating
     Route::get('/notifications', [NotificationController::class, 'getNotifications']);
     Route::post('user/{user}/profile-image', [ApiUserController::class, 'uploadProfileImage']);
+
+        // // New route to fetch buses for a specific event
+        // Route::get('/buses', [BusController::class, 'index']); // Fetch all buses
+        // Route::get('/bus/{busId}/points', [BusController::class, 'getBusPoints']); // Get points for a bus
+        // Route::get('/events/{eventId}/buses', [BusController::class, 'getBusesForEvent']); // Get buses for an event
+    
+
 });
 
 Route::get('/login', [AuthController::class, 'login'])->name('login');
@@ -68,3 +75,9 @@ Route::middleware('auth:sanctum')->group(function () {
 Route::middleware('auth:sanctum')->get('user/events', [UserController::class, 'getUserEvents']);
 
 Route::get('/trigger-error', [ExampleController::class, 'triggerError']);
+
+Route::get('/buses', [BusController::class, 'index']);
+// Route::get('/bus/{busId}/points', [BusController::class, 'getBusPoints']);
+Route::get('/buses/{id}', [BusController::class, 'show']);
+Route::get('buses/{id}/driver', [BusController::class, 'getDriver']);
+Route::get('buses/{id}/points', [BusController::class, 'getBusPoints']);

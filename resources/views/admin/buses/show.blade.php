@@ -12,6 +12,8 @@
     <li><strong>Route: </strong>{{ $bus->route }}</li>
 </ul>
 <a href="{{ route('admin.buses.points.create', $bus->id) }}" class="btn btn-primary mb-3">Add Point</a>
+<a href="{{ route('admin.buses.index') }}" class="btn btn-primary float-right">Back to Buses</a>
+
     <!-- Card for showing bus route map -->
     <div class="card mb-3">
         <div class="card-body">
@@ -72,7 +74,6 @@
             </li>
         @endforeach
     </ul>
-    <a href="{{ route('admin.buses.index') }}" class="btn btn-primary mt-3">Back to Buses</a>
 </div>
 
 <!-- Leaflet.js CSS -->

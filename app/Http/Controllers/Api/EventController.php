@@ -52,6 +52,43 @@ class EventController extends Controller
     }
 
     /**
+     * Handle event search, filter, and sorting for API.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getAllEventsWithSearchAndFilter(Request $request): JsonResponse
+    {
+        \Log::info('Search request received', $request->all()); // Log the request parameters
+
+        $query = Event::with('category'); // Eager load the category relationship
+
+        // Search filters
+        if ($request->search_name) {
+            $query->where('name', 'like', '%' . $request->search_name . '%');
+        }
+
+        if ($request->search_date) {
+            $query->whereDate('date', $request->search_date);
+        }
+
+        if ($request->category_filter) {
+            $query->where('category_id', $request->category_filter);
+        }
+
+        // Sorting logic
+        if ($request->has('sort_by')) {
+            $query->orderBy($request->sort_by, 'asc');
+        }
+
+        // Execute query and get results
+        $events = $query->get();
+
+        // Return the complete event attributes including the related category
+        return response()->json($this->formatCompleteEvents($events), 200);
+    }
+
+    /**
      * Format events for FullCalendar.
      *
      * @param $events
@@ -69,6 +106,34 @@ class EventController extends Controller
                 'start' => $start->format('Y-m-d\TH:i:s'), // Format to ISO 8601
                 'end' => $end->format('Y-m-d\TH:i:s'),
                 'description' => $event->description,
+            ];
+        })->toArray();
+    }
+
+    /**
+     * Format events to include all attributes.
+     *
+     * @param $events
+     * @return array
+     */
+    protected function formatCompleteEvents($events): array
+    {
+        return $events->map(function ($event) {
+            $start = Carbon::parse($event->date . ' ' . $event->start_time);
+            $end = Carbon::parse($event->date . ' ' . $event->end_time);
+
+            return [
+                'id' => $event->id,
+                'name' => $event->name,
+                'date' => $event->date,
+                'description' => $event->description,
+                'capacity' => $event->capacity,
+                'location' => $event->location,
+                'event_image' => $event->event_image,
+                'category_id' => $event->category_id,
+                'category' => $event->category, // Include the category details
+                'start_time' => $start->format('Y-m-d H:i:s'),
+                'end_time' => $end->format('Y-m-d H:i:s'),
             ];
         })->toArray();
     }

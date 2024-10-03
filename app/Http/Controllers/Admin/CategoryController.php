@@ -7,6 +7,8 @@ use App\Models\Categories;
 use Illuminate\Http\Request;
 use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 use RealRashid\SweetAlert\Facades\Alert;
+use Illuminate\Http\JsonResponse;
+
 
 class CategoryController extends Controller
 {
@@ -101,5 +103,13 @@ class CategoryController extends Controller
         Alert::success('Success', 'Category deleted successfully.');
 
         return redirect()->route('admin.categories.index');
+    }
+    public function getAllCategories(): JsonResponse
+    {
+        // Fetch all categories
+        $categories = Categories::all();
+
+        // Return categories in JSON format
+        return response()->json($categories, 200);
     }
 }

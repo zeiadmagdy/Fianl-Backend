@@ -14,6 +14,7 @@ use App\Http\Controllers\Api\PointsController;
 use App\Http\Controllers\Api\BusController;
 use App\Http\Controllers\Api\ExampleController;
 use App\Http\Controllers\Api\NotificationController;
+use App\Http\Controllers\Admin\CategoryController;
 
 /*
 |--------------------------------------------------------------------------
@@ -61,6 +62,10 @@ Route::get('/events/{id}', [EventController::class, 'show']);
 Route::get('/eventss', [ApiEventController::class, 'index']); // Fetch all events
 Route::get('/eventsss', [ApiEventController::class, 'getFilteredEvents']); // Fetch filtered events by category
 
+// New Route for filtering, searching, and sorting events
+// Route::get('/events/search', [ApiEventController::class, 'getAllEventsWithSearchAndFilter']); // New search, filter, and sort feature
+
+
 Route::post('/send-reset-otp', [ForgetPasswordController::class, 'sendResetOtp']);
 Route::post('/verify-otp', [ForgetPasswordController::class, 'verifyOtp']);
 Route::post('/reset-password', [ForgetPasswordController::class, 'resetPassword']);
@@ -81,3 +86,7 @@ Route::get('/buses', [BusController::class, 'index']);
 Route::get('/buses/{id}', [BusController::class, 'show']);
 Route::get('buses/{id}/driver', [BusController::class, 'getDriver']);
 Route::get('buses/{id}/points', [BusController::class, 'getBusPoints']);
+
+Route::get('/eventssearch', [ApiEventController::class, 'getAllEventsWithSearchAndFilter']); // Search, filter, and sort events
+
+Route::get('/categories', [CategoryController::class, 'getAllCategories']);

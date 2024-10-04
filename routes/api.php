@@ -33,6 +33,10 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::middleware('auth:sanctum')->get('/bus/{busId}/points', [BusController::class, 'getBusPoints']);
 
+Route::middleware(['auth:sanctum', 'admin'])->group(function () {
+    Route::put('/admin/users/{id}', [UserController::class, 'updateUserByAdmin']);
+}); // updated user by admin 
+
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('user', [ApiUserController::class, 'view']);
     Route::put('user', [ApiUserController::class, 'update']); // PUT method for updating

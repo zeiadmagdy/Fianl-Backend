@@ -144,8 +144,14 @@ class CreditController extends Controller
         $hashed = hash_hmac('sha512', $connectedString, $secret);
 
         if ($hashed == $hmac) {
-            echo "secure";
-            exit;
+            $orderId = $data['order'];
+            $transactionId = $data['id'];
+
+            // Redirect to a view and pass the data
+            return view('confirmation', [
+                'orderId' => $orderId,
+                'transactionId' => $transactionId,
+            ]);
         }
 
         echo 'not secure';

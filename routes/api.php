@@ -15,6 +15,7 @@ use App\Http\Controllers\Api\BusController;
 use App\Http\Controllers\Api\ExampleController;
 use App\Http\Controllers\Api\NotificationController;
 use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Payment\CreditController;
 
 /*
 |--------------------------------------------------------------------------
@@ -35,7 +36,7 @@ Route::middleware('auth:sanctum')->get('/bus/{busId}/points', [BusController::cl
 
 Route::middleware(['auth:sanctum', 'admin'])->group(function () {
     Route::put('/admin/users/{id}', [UserController::class, 'updateUserByAdmin']);
-}); // updated user by admin 
+}); // updated user by admin
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('user', [ApiUserController::class, 'view']);
@@ -47,7 +48,7 @@ Route::middleware('auth:sanctum')->group(function () {
         // Route::get('/buses', [BusController::class, 'index']); // Fetch all buses
         // Route::get('/bus/{busId}/points', [BusController::class, 'getBusPoints']); // Get points for a bus
         // Route::get('/events/{eventId}/buses', [BusController::class, 'getBusesForEvent']); // Get buses for an event
-    
+
 
 });
 
@@ -94,3 +95,6 @@ Route::get('buses/{id}/points', [BusController::class, 'getBusPoints']);
 Route::get('/eventssearch', [ApiEventController::class, 'getAllEventsWithSearchAndFilter']); // Search, filter, and sort events
 
 Route::get('/categories', [CategoryController::class, 'getAllCategories']);
+
+//PayMob
+Route::post('/initiate-payment', [CreditController::class, 'initiatePayment']);

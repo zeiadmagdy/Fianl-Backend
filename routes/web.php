@@ -83,7 +83,7 @@ Route::middleware('admin')->prefix('admin')->name('admin.')->group(function () {
 });
 // paymob
 Route::get('/checkout', function () {
-    return view('checkout');
+    return view('payment.checkout');
 });
 Route::post('/credit', [CreditController::class, 'credit'])->name('credit');
 Route::get('/callback', [CreditController::class, 'callback'])->name('callback');

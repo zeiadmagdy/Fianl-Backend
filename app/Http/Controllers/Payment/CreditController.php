@@ -148,7 +148,7 @@ class CreditController extends Controller
             $transactionId = $data['id'];
 
             // Redirect to a view and pass the data
-            return view('confirmation', [
+            return view('payment.confirmation', [
                 'orderId' => $orderId,
                 'transactionId' => $transactionId,
             ]);
@@ -157,4 +157,17 @@ class CreditController extends Controller
         echo 'not secure';
         exit;
     }
+
+    public function initiatePayment(Request $request)
+    {
+        // Get necessary payment details from the request (e.g., amount, order_id)
+        $orderId = $request->input('order_id');
+        $amount = $request->input('amount');
+
+        // Generate a payment URL (dummy URL for example purposes)
+        $paymentUrl = url('/checkout') . '?order_id=' . $orderId . '&amount=' . $amount;
+
+        return response()->json(['payment_url' => $paymentUrl]);
+    }
+
 }

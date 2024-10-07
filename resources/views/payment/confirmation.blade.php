@@ -121,7 +121,7 @@
             </div>
             <div class="thank-you-header">
                 <h1>Payment Successful!</h1>
-                <p>Thank you for your payment. Your transaction has been completed successfully.</p>
+                <p>Thank you for your payment. <br/> transaction has been completed successfully.</p>
             </div>
 
             <!-- Divider -->
@@ -138,7 +138,7 @@
                 <button class="print-button" onclick="window.print()">
                     <i class="fas fa-print"></i> Download Invoice
                 </button>
-                <a href="/" class="back-button text-decoration-none">
+                <a href="http://localhost:4200/" class="back-button text-decoration-none">
                     <i class="fas fa-home"></i> Back to Eventoria
                 </a>
             </div>

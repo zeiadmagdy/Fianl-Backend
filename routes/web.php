@@ -14,6 +14,7 @@ use App\Mail\ResetOtpMail;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\RegistrationSuccessMail;
 use App\Models\User;
+use App\Http\Controllers\Payment\CreditController;
 
 /*
 |--------------------------------------------------------------------------
@@ -80,3 +81,9 @@ Route::middleware('admin')->prefix('admin')->name('admin.')->group(function () {
     })->name('send.registration.mail');
 
 });
+// paymob
+Route::get('/checkout', function () {
+    return view('checkout');
+});
+Route::post('/credit', [CreditController::class, 'credit'])->name('credit');
+Route::get('/callback', [CreditController::class, 'callback'])->name('callback');

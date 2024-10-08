@@ -16,6 +16,7 @@ use App\Http\Controllers\Api\ExampleController;
 use App\Http\Controllers\Api\NotificationController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Payment\CreditController;
+use App\Http\Controllers\Api\CategoryEventController;
 
 /*
 |--------------------------------------------------------------------------
@@ -98,3 +99,4 @@ Route::get('/categories', [CategoryController::class, 'getAllCategories']);
 
 //PayMob
 Route::post('/initiate-payment', [CreditController::class, 'initiatePayment']);
+Route::get('categories/{id}/events', [CategoryEventController::class, 'getEventsByCategory']);

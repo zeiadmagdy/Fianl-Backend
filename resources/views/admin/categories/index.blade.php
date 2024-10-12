@@ -1,18 +1,23 @@
 @extends('layouts.app')
 
+@section('title', 'Categories')
+
 @section('content')
-<div class="container">
-    <h1 class="mb-3">Categories</h1>
-    <a href="{{ route('admin.categories.create') }}" class="btn btn-primary mb-3">Add New Category</a>
-    <a href="{{ route('admin.dashboard') }}" class="btn btn-primary mb-3">Back to Dashboard</a>
+<div class="container mt-5">
+    <!-- Header Section -->
+    <div class="card-header">
+        <h1 class="animated-heading" style="text-align: center; font-weight: bold;">Categories</h1>
+        <a href="{{ route('admin.categories.create') }}" class="btn btn-primary float-left">Add New Category</a>
+        <a href="{{ route('admin.dashboard') }}" class="btn btn-primary float-right">Back to Dashboard</a>
+    </div>
 
     @if(session('success'))
-        <div class="alert alert-success">
+        <div class="alert alert-success mt-3">
             {{ session('success') }}
         </div>
     @endif
 
-    <table class="table table-bordered">
+    <table class="table table-bordered mt-3">
         <thead>
             <tr>
                 <th>ID</th>
@@ -87,3 +92,27 @@
         });
     }
 </script>
+
+<style>
+    /* CSS Animation for smooth appearance */
+    .animated-heading {
+        animation: fadeInDown 1s ease-out;
+        color: #333;
+        font-family: 'Roboto', sans-serif;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        text-align: center;
+    }
+
+    /* Keyframes for the fade-in-down animation */
+    @keyframes fadeInDown {
+        0% {
+            opacity: 0;
+            transform: translateY(-20px);
+        }
+        100% {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+</style>

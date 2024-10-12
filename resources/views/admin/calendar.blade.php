@@ -11,7 +11,7 @@
 <div class="row mb-3">
     <div class="col-lg-3">
         <select id="categoryFilter" class="form-control">
-            <option value="">All Categories</option>
+            <option value="0">All Categories</option>
             @foreach($categories as $category)
                 <option value="{{ $category->id }}">{{ $category->name }}</option>
             @endforeach

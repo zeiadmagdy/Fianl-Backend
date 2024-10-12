@@ -41,4 +41,12 @@
             <i class="nav-icon fas fa-user-tie"></i> Drivers
         </a>
     </li>
+
+    <!-- New Image Creation Section -->
+    <li class="nav-item">
+        <a href="{{ route('admin.image_creation.index') }}" class="nav-link"> <!-- Updated link -->
+            <i class="nav-icon fas fa-image"></i> <!-- Icon for Image Creation -->
+            <p>Image Creation</p>
+        </a>
+    </li>
 </ul>

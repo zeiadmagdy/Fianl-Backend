@@ -99,4 +99,6 @@ Route::get('/categories', [CategoryController::class, 'getAllCategories']);
 
 //PayMob
 Route::post('/initiate-payment', [CreditController::class, 'initiatePayment']);
+
+
 Route::get('categories/{id}/events', [CategoryEventController::class, 'getEventsByCategory']);

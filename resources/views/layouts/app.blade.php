@@ -17,19 +17,25 @@
         'node_modules/@fullcalendar/core/main.min.css',
         'node_modules/@fullcalendar/daygrid/main.min.css'
     ])
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auUjS6Gm2dqgo1pbWVkp1qI4FLakibk04wwxk" crossorigin="anonymous">
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/4.5.1/fabric.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/konva/8.3.5/konva.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Open+Sans:wght@400;700&family=Lato:wght@400;700&family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+
+
 </head>
 
-<body class="hold-transition">
+<body class="hold-transition h-auto">
     <div class="wrapper">
         @include('partials.header') 
 
-        <aside class="main-sidebar sidebar-dark-primary elevation-4">
+        <aside class="main-sidebar sidebar-dark-primary elevation-4 h-auto ">
             @include('partials.sidebar')
         </aside>
 
-        <div class="content-wrapper p-4">
+        <div class="content-wrapper p-4 h-auto">
             <section class="content">
                 <div class="container-fluid">
                     @yield('content')

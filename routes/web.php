@@ -15,6 +15,8 @@ use Illuminate\Support\Facades\Mail;
 use App\Mail\RegistrationSuccessMail;
 use App\Models\User;
 use App\Http\Controllers\Payment\CreditController;
+use App\Http\Controllers\Admin\ImageCreationController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -80,6 +82,11 @@ Route::middleware('admin')->prefix('admin')->name('admin.')->group(function () {
         return 'Registration success email sent!';
     })->name('send.registration.mail');
 
+    // Image Creation Routes
+// Image Creation Routes
+Route::get('image-creation', [ImageCreationController::class, 'index'])->name('image_creation.index');
+Route::get('image-creation/create', [ImageCreationController::class, 'create'])->name('image_creation.create'); // Adding create route
+Route::post('image-creation', [ImageCreationController::class, 'store'])->name('image_creation.store');
 });
 // paymob
 Route::get('/checkout', function () {

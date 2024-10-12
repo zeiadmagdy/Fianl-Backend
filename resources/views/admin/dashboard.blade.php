@@ -87,7 +87,11 @@
                     @else
                         @foreach ($upcomingEvents as $event)
                             <li class="list-group-item">
-                                <strong>{{ $event->name }}</strong><br>
+                                <strong>
+                                    <a href="{{ route('admin.events.show', $event->id) }}">
+                                        {{ $event->name }}
+                                    </a>
+                                </strong><br>
                                 Date: {{ $event->date->format('Y-m-d') }}<br>
                                 Description: {{ $event->description }}
                             </li>
@@ -99,12 +103,7 @@
     </div>
 </div>
 
-<!-- Calendar Section -->
-<div class="row">
-    <div class="col-lg-12">
-        <div id="calendar"></div>
-    </div>
-</div>
+
 
 @endsection
 
@@ -113,20 +112,5 @@
 <script src="https://cdn.jsdelivr.net/npm/@fullcalendar/daygrid@6.1.8/index.global.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@fullcalendar/interaction@6.1.8/index.global.min.js"></script>
 
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    var calendarEl = document.getElementById('calendar');
 
-    var calendar = new FullCalendar.Calendar(calendarEl, {
-        initialView: 'dayGridMonth',
-        events: '/api/eventss', // Use the correct endpoint here
-        editable: false,
-        eventClick: function(info) {
-            alert('Event: ' + info.event.title + '\nDescription: ' + info.event.extendedProps.description);
-        }
-    });
-
-    calendar.render();
-});
-</script>
 @endsection

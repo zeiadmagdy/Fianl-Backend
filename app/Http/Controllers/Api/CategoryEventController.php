@@ -20,7 +20,9 @@ class CategoryEventController extends Controller
 
         // Return the category with its events
         return response()->json([
-            'category' => $category->name,
+            'name' => $category->name,
+            'description' => $category->description,
+            'category_image' => $category->category_image,
             'events' => $category->events
         ]);
     }

@@ -128,6 +128,8 @@ class UserController extends Controller
 
     $user->save();
 
+    Alert::success('Success', 'User updated successfully.');
+
     return redirect()->route('admin.users.index')->with('success', 'User updated successfully.');
 }
     /**

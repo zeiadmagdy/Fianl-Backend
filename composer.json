@@ -11,6 +11,7 @@
         "cloudinary/cloudinary_php": "^2.0",
         "doctrine/dbal": "^3.0",
         "guzzlehttp/guzzle": "^7.9",
+        "intervention/image": "^3.8",
         "laravel/framework": "^9.19",
         "laravel/sanctum": "^3.3",
         "laravel/tinker": "^2.7",

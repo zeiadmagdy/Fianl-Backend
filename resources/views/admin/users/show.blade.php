@@ -8,7 +8,7 @@
 <div class="card-header">
     <h1 class="animated-heading" style="text-align: center; font-weight: bold;">User Details</h1>
     <a href="{{ route('admin.users.edit', $user->id) }}" class="btn btn-warning float-right">Edit User</a>
-    <a href="{{ route('admin.dashboard') }}" class="btn btn-primary float-left">Back to Dashboard</a>
+    <a href="{{ route('admin.users.index') }}" class="btn btn-primary float-left">Back to Users</a>
 </div>
 
 <!-- User Information Cards -->

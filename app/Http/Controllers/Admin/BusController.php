@@ -7,6 +7,13 @@ use App\Models\Bus;
 use App\Models\BusPoint;
 use Illuminate\Http\Request;
 use RealRashid\SweetAlert\Facades\Alert;
+use Barryvdh\DomPDF\Facade\Pdf;
+use Dompdf\Dompdf;
+use Dompdf\Options;
+use Illuminate\Support\Facades\Storage;
+use Knp\Snappy\Pdf as SnappyPdf;
+
+
 
 class BusController extends Controller
 {
@@ -82,14 +89,12 @@ class BusController extends Controller
         Alert::success('Success', 'Bus deleted successfully.');
         return redirect()->route('admin.buses.index')->with('success', 'Bus deleted successfully.');
     }
+    public function downloadPdf($id)
+{
+    $bus = Bus::with('driver', 'points')->findOrFail($id);
+    $pdf = \App::make('snappy.pdf.wrapper');
 
-    // New method to get the points of a specific bus via API
-    // public function getBusPoints($busId)
-    // {
-    //     $points = BusPoint::where('bus_id', $busId)
-    //                 ->orderBy('arrived_time', 'asc')
-    //                 ->get(['name', 'latitude', 'longitude', 'arrived_time']);
-                    
-    //     return response()->json($points); // Return points as JSON
-    // }
+    $pdf->loadView('admin.buses.pdf', compact('bus'));
+    return $pdf->download('bus-details-' . $bus->name . '.pdf');
+}
 }

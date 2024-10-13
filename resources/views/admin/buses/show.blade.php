@@ -13,6 +13,8 @@
 </ul>
 <a href="{{ route('admin.buses.points.create', $bus->id) }}" class="btn btn-primary mb-3">Add Point</a>
 <a href="{{ route('admin.buses.index') }}" class="btn btn-primary float-right">Back to Buses</a>
+<!-- New PDF Download Button -->
+<a href="{{ route('admin.buses.downloadPdf', $bus->id) }}" class="btn btn-secondary mb-3">Download PDF</a>
 
     <!-- Card for showing bus route map -->
     <div class="card mb-3">

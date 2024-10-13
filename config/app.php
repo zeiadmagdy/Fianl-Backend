@@ -187,6 +187,7 @@ return [
          * Package Service Providers...
          */
         // CloudinaryLabs\CloudinaryLaravel\CloudinaryServiceProvider::class,
+        Barryvdh\DomPDF\ServiceProvider::class,  // Add this line
 
         /*
          * Application Service Providers...
@@ -211,6 +212,8 @@ return [
     */
 
     'aliases' => Facade::defaultAliases()->merge([
+        'SnappyPdf' => Knp\Snappy\Pdf::class,
+
         // 'ExampleClass' => App\Example\ExampleClass::class,
     ])->toArray(),
 

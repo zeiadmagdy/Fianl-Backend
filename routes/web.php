@@ -7,6 +7,8 @@ use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\BusController;
+use App\Http\Controllers\Api\BusController as ApiBusController;
+
 use App\Http\Controllers\Admin\PointController;
 use App\Http\Controllers\Admin\DriverController;
 use App\Http\Controllers\Admin\CalendarController;
@@ -65,6 +67,8 @@ Route::middleware('admin')->prefix('admin')->name('admin.')->group(function () {
     // Bus routes (resourceful)
     Route::resource('buses', BusController::class);
     Route::resource('buses.points', PointController::class)->shallow(); // nested resource
+    Route::get('buses/{id}/download-pdf', [ApiBusController::class, 'downloadPdf'])->name('buses.downloadPdf'); // Ensure this route is defined
+
 
     // Driver routes (resourceful)
     Route::resource('drivers', DriverController::class);

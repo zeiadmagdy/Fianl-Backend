@@ -8,6 +8,7 @@ use App\Models\Driver;
 use App\Models\Point;
 use Illuminate\Http\Request;
 
+
 class BusController extends Controller
 {
     // Fetch all buses with drivers and points (existing)
@@ -68,4 +69,12 @@ class BusController extends Controller
 
         return response()->json($buses);
     }
+    public function downloadPdf($id)
+{
+    $bus = Bus::with('driver', 'points')->findOrFail($id);
+    $pdf = \App::make('snappy.pdf.wrapper');
+
+    $pdf->loadView('admin.buses.pdf', compact('bus'));
+    return $pdf->download('bus-details-' . $bus->name . '.pdf');
+}
 }

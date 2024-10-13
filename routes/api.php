@@ -92,6 +92,8 @@ Route::get('/buses', [BusController::class, 'index']);
 Route::get('/buses/{id}', [BusController::class, 'show']);
 Route::get('buses/{id}/driver', [BusController::class, 'getDriver']);
 Route::get('buses/{id}/points', [BusController::class, 'getBusPoints']);
+Route::get('/buses/{id}/download-pdf', [BusController::class, 'downloadPdf'])->name('buses.downloadPdf');
+
 
 Route::get('/eventssearch', [ApiEventController::class, 'getAllEventsWithSearchAndFilter']); // Search, filter, and sort events
 

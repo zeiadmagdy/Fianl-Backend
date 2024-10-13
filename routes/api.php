@@ -102,3 +102,6 @@ Route::post('/initiate-payment', [CreditController::class, 'initiatePayment']);
 
 
 Route::get('categories/{id}/events', [CategoryEventController::class, 'getEventsByCategory']);
+
+// get up coming events
+Route::get('/upcoming-events', [ApiEventController::class, 'getUpcomingEvents']);

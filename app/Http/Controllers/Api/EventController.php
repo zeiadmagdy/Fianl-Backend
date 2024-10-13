@@ -137,4 +137,13 @@ class EventController extends Controller
             ];
         })->toArray();
     }
+
+    public function getUpcomingEvents() {
+        $events = Event::where('date', '>=', now())
+                        ->orderBy('date', 'asc')
+                        ->take(5)
+                        ->get();
+    
+        return response()->json($events);
+    }
 }

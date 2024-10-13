@@ -98,3 +98,6 @@ Route::get('/checkout', function () {
 });
 Route::post('/credit', [CreditController::class, 'credit'])->name('credit');
 Route::get('/callback', [CreditController::class, 'callback'])->name('callback');
+
+//Subscriptions
+Route::post('/subscribe', 'SubscriptionController@subscribe')->name('subscribe');

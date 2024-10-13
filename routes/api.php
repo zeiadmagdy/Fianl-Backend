@@ -17,6 +17,7 @@ use App\Http\Controllers\Api\NotificationController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Payment\CreditController;
 use App\Http\Controllers\Api\CategoryEventController;
+use App\Http\Controllers\SubscriptionController;
 
 /*
 |--------------------------------------------------------------------------
@@ -107,3 +108,7 @@ Route::get('categories/{id}/events', [CategoryEventController::class, 'getEvents
 
 // get up coming events
 Route::get('/upcoming-events', [ApiEventController::class, 'getUpcomingEvents']);
+
+
+//subscription
+Route::post('/subscribe', [SubscriptionController::class, 'subscribe']);

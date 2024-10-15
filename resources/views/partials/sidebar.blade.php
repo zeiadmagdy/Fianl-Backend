@@ -49,4 +49,13 @@
             <p>Image Creation</p>
         </a>
     </li>
+
+
+    <li class="nav-item">
+        <a href="{{ route('admin.contacts') }}" class="nav-link">
+            <i class="nav-icon fas fa-address-book"></i>
+            <p>Contacts</p>
+        </a>
+    </li>
+    
 </ul>

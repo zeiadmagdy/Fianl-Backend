@@ -15,6 +15,7 @@ use App\Http\Controllers\Api\BusController;
 use App\Http\Controllers\Api\ExampleController;
 use App\Http\Controllers\Api\NotificationController;
 use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\Payment\CreditController;
 use App\Http\Controllers\Api\CategoryEventController;
 use App\Http\Controllers\SubscriptionController;
@@ -117,3 +118,4 @@ Route::post('/subscribe', [SubscriptionController::class, 'subscribe']);
 
 Route::post('/contacts', [ContactController::class, 'store']); // POST request for form submission
 Route::get('/contacts', [ContactController::class, 'index']);  // GET request to retrieve the contacts
+Route::get('/admin/contacts', [ContactController::class, 'index'])->name('admin.contacts');

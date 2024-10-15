@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Contact;
+use Illuminate\Support\Facades\Validator;
+use App\Http\Controllers\Controller;
 
 
 class ContactController extends Controller
@@ -33,9 +35,11 @@ class ContactController extends Controller
     }
 
     // Retrieve all contacts for the admin dashboard
+   
     public function index()
     {
-        $contacts = Contact::all();  // Fetch all records from the database
-        return response()->json($contacts);
-    } 
+        $contacts = Contact::all(); // Retrieve all contacts
+        return view('admin.contacts', compact('contacts')); // Pass contacts to the view
+    }
+
 }

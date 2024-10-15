@@ -18,6 +18,7 @@ use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Payment\CreditController;
 use App\Http\Controllers\Api\CategoryEventController;
 use App\Http\Controllers\SubscriptionController;
+use App\Http\Controllers\ContactController;
 
 /*
 |--------------------------------------------------------------------------
@@ -112,3 +113,7 @@ Route::get('/upcoming-events', [ApiEventController::class, 'getUpcomingEvents'])
 
 //subscription
 Route::post('/subscribe', [SubscriptionController::class, 'subscribe']);
+
+
+Route::post('/contacts', [ContactController::class, 'store']); // POST request for form submission
+Route::get('/contacts', [ContactController::class, 'index']);  // GET request to retrieve the contacts

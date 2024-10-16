@@ -38,8 +38,9 @@ class ContactController extends Controller
    
     public function index()
     {
-        $contacts = Contact::all(); // Retrieve all contacts
-        return view('admin.contacts', compact('contacts')); // Pass contacts to the view
+        // Use paginate instead of all
+        $contacts = Contact::paginate(5); // Display 5 contacts per page
+        return view('admin.contacts', compact('contacts')); // Pass paginated contacts to the view
     }
 
 }

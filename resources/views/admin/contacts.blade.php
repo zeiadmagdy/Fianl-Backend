@@ -39,4 +39,9 @@
         </table>
     @endif
 </div>
+
+<div class="d-flex justify-content-center mt-4">
+        {{ $contacts->links('pagination::bootstrap-5') }} <!-- Use Bootstrap 5 pagination links -->
+    </div>
+
 @endsection

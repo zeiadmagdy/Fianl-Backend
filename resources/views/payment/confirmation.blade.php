@@ -1,6 +1,7 @@
 <!-- resources/views/thankyou.blade.php -->
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -112,6 +113,7 @@
         }
     </style>
 </head>
+
 <body>
     <div class="container">
         <div class="thank-you-container">
@@ -120,8 +122,9 @@
                 <i class="fas fa-check-circle"></i>
             </div>
             <div class="thank-you-header">
-                <h1>Payment Successful!</h1>
-                <p>Thank you for your payment. <br/> transaction has been completed successfully.</p>
+                <h1>Transaction has been completed!</h1>
+                <p>Please check your mail for The Confirmation. <br /> </p>
+                <p>Thank you!<br /> </p>
             </div>
 
             <!-- Divider -->
@@ -129,21 +132,27 @@
 
             <!-- Payment Details -->
             <div class="thank-you-details">
+                <h4><strong> Your Ticket Order Details:</strong><br /> </h4>
                 <p><span class="detail-label">Order ID:</span> {{ $orderId }}</p>
                 <p><span class="detail-label">Transaction ID:</span> {{ $transactionId }}</p>
             </div>
 
             <!-- Action Buttons -->
             <div class="action-buttons">
+                <br>
                 <button class="print-button" onclick="window.print()">
                     <i class="fas fa-print"></i> Download Invoice
                 </button>
                 <a href="http://localhost:4200/" class="back-button text-decoration-none">
-                    <i class="fas fa-home"></i> Back to Eventoria
+                    <i class="fas fa-home"></i> Back to Home
                 </a>
             </div>
+            <br>
+            <small class="text-center d-block wv-100">*Print this Page to be as Ticket*</small>
+
         </div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
+
 </html>

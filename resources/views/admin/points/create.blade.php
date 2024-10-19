@@ -112,6 +112,7 @@
                 .then(data => {
                     var searchResults = document.getElementById('search-results');
                     searchResults.innerHTML = ''; // Clear previous results
+
                     if (data.length > 0) {
                         data.forEach(function (result, index) {
                             var option = document.createElement('option');
@@ -121,6 +122,15 @@
                             option.setAttribute('data-lon', result.lon);
                             searchResults.appendChild(option);
                         });
+
+                        // Automatically select and place a marker at the first result
+                        var firstOption = searchResults.options[0];
+                        var lat = firstOption.getAttribute('data-lat');
+                        var lon = firstOption.getAttribute('data-lon');
+                        if (lat && lon) {
+                            placeMarker(lat, lon);
+                            searchResults.selectedIndex = 0; // Select the first option by default
+                        }
                     } else {
                         alert('Location not found.');
                     }
@@ -142,4 +152,5 @@
         });
     });
 </script>
+
 @endsection

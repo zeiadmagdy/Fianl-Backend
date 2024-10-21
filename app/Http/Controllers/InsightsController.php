@@ -5,7 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Categories;
-use App\Models\Event; // Make sure to include the Event model
+use App\Models\Subscription;
+use App\Models\Event;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 
@@ -18,16 +19,16 @@ class InsightsController extends Controller
 
         // Data for user registrations per month
         $userRegistrations = User::select(DB::raw("COUNT(*) as count"), DB::raw("DATE_FORMAT(created_at, '%m') as month"))
-            ->whereYear('created_at', $currentYear) // Only current year
+            ->whereYear('created_at', $currentYear)
             ->groupBy('month')
             ->orderBy('month')
             ->get();
 
         // Prepare user registration counts for each month
-        $userCounts = array_fill(0, 12, 0); // Initialize counts for each month
+        $userCounts = array_fill(0, 12, 0);
         foreach ($userRegistrations as $registration) {
-            $monthIndex = (int)$registration->month - 1; // Adjust to 0-based index
-            $userCounts[$monthIndex] = $registration->count; // Set user count for respective month
+            $monthIndex = (int)$registration->month - 1;
+            $userCounts[$monthIndex] = $registration->count;
         }
 
         // Labels for the months (January - December)
@@ -37,10 +38,10 @@ class InsightsController extends Controller
         $usersPerMonth = User::select('id', 'name', 'email', DB::raw("DATE_FORMAT(created_at, '%m') as month"))
             ->whereYear('created_at', $currentYear)
             ->get()
-            ->groupBy('month'); // Group users by month
+            ->groupBy('month');
 
         // Fetch top 10 events by user attendance
-        $topEvents = Event::withCount('users') // Assuming a 'users' relationship exists in the Event model
+        $topEvents = Event::withCount('users')
             ->orderBy('users_count', 'desc')
             ->take(10)
             ->get();
@@ -49,11 +50,10 @@ class InsightsController extends Controller
         $eventNames = $topEvents->pluck('name')->toArray();
         $eventCapacities = $topEvents->pluck('capacity')->toArray();
         $eventAttendances = $topEvents->pluck('users_count')->toArray();
-        $eventUsers = []; // To hold user lists for each event
-        $eventIds = $topEvents->pluck('id')->toArray(); // Adjust according to your model
+        $eventUsers = [];
+        $eventIds = $topEvents->pluck('id')->toArray();
 
         foreach ($topEvents as $event) {
-            // Specify the table name for the id column to avoid ambiguity
             $eventUsers[$event->id] = $event->users()->select('users.id', 'users.name', 'users.email')->get();
         }
 
@@ -72,13 +72,11 @@ class InsightsController extends Controller
             ->orderBy('month')
             ->get();
 
-        // Initialize an array for attendance counts
-        $monthlyAttendanceCounts = array_fill(0, 12, 0); // Default counts for each month
+        $monthlyAttendanceCounts = array_fill(0, 12, 0);
 
-        // Populate the attendance counts based on fetched data
         foreach ($monthlyAttendance as $attendance) {
-            $monthIndex = (int)$attendance->month - 1; // Adjust to 0-based index
-            $monthlyAttendanceCounts[$monthIndex] = $attendance->count; // Set attendance count for respective month
+            $monthIndex = (int)$attendance->month - 1;
+            $monthlyAttendanceCounts[$monthIndex] = $attendance->count;
         }
 
         // Events by Category
@@ -97,15 +95,6 @@ class InsightsController extends Controller
         $locationNames = $locationCounts->pluck('location')->toArray();
         $locationCounts = $locationCounts->pluck('count')->toArray();
 
-        // User Engagement Over Time
-        $engagementData = User::select(DB::raw('DATE_FORMAT(created_at, "%Y-%m") as month'), DB::raw('COUNT(*) as count'))
-            ->groupBy('month')
-            ->orderBy('month')
-            ->get();
-
-        $engagementMonths = $engagementData->pluck('month')->toArray();
-        $engagementCounts = $engagementData->pluck('count')->toArray();
-
         // Top Attendees
         $topAttendees = User::withCount('events')
             ->orderBy('events_count', 'desc')
@@ -116,8 +105,8 @@ class InsightsController extends Controller
         $topAttendeeCounts = $topAttendees->pluck('events_count')->toArray();
 
         // Subscription Growth
-        $subscriptionGrowthData = User::select(DB::raw('DATE_FORMAT(created_at, "%Y-%m") as month'), DB::raw('COUNT(*) as count'))
-            ->whereYear('created_at', $currentYear) // Include year filter
+        $subscriptionGrowthData = Subscription::select(DB::raw('DATE_FORMAT(created_at, "%Y-%m") as month'), DB::raw('COUNT(*) as count'))
+            ->whereYear('created_at', $currentYear)
             ->groupBy('month')
             ->orderBy('month')
             ->get();
@@ -127,12 +116,15 @@ class InsightsController extends Controller
             return $currentYear . '-' . str_pad($m, 2, '0', STR_PAD_LEFT);
         }, range(1, 12));
 
-        // Fill subscription counts
-        $subscriptionCounts = array_fill(0, 12, 0); // Default counts for each month
+        $subscriptionCounts = array_fill(0, 12, 0);
         foreach ($subscriptionGrowthData as $data) {
-            $monthIndex = (int)substr($data->month, 5, 2) - 1; // Extract month index (0-based)
-            $subscriptionCounts[$monthIndex] = $data->count; // Set count for respective month
+            $monthIndex = (int)substr($data->month, 5, 2) - 1;
+            $subscriptionCounts[$monthIndex] = $data->count;
         }
+        // Prepare subscription month labels (for example, '2024-01', '2024-02', etc.)
+        $subscriptionMonths = array_map(function($m) use ($currentYear) {
+            return $currentYear . '-' . str_pad($m, 2, '0', STR_PAD_LEFT);
+        }, range(1, 12));
 
         // Pass the data to the view
         return view('admin.insights', compact(
@@ -146,17 +138,16 @@ class InsightsController extends Controller
             'eventIds',
             'demographicLabels', 
             'demographicCounts',
-            'monthlyAttendanceCounts', // Updated to use filled counts
+            'monthlyAttendanceCounts',
             'categoryNames',
             'categoryCounts',
             'locationNames',
             'locationCounts',
-            'engagementMonths',
-            'engagementCounts',
             'topAttendeeNames',
             'topAttendeeCounts',
             'growthMonths',
-            'subscriptionCounts'
+            'subscriptionCounts',
+            
         ));
     }
 }

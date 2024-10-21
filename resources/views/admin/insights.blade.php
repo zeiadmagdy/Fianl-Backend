@@ -83,18 +83,6 @@
     </div>
 
     <div class="row">
-        <!-- User Engagement Over Time Card -->
-        <div class="col-lg-6 mb-4">
-            <div class="card shadow-lg border-light">
-                <div class="card-header bg-success text-white">
-                    <h5 class="mb-0">User Engagement Over Time</h5>
-                </div>
-                <div class="card-body">
-                    <canvas id="userEngagementChart" width="400" height="200"></canvas>
-                </div>
-            </div>
-        </div>
-
         <!-- Top Attendees Card -->
         <div class="col-lg-6 mb-4">
             <div class="card shadow-lg border-light">
@@ -106,11 +94,9 @@
                 </div>
             </div>
         </div>
-    </div>
 
     <!-- Subscription Growth Card -->
-    <div class="row">
-        <div class="col-lg-12 mb-4">
+        <div class="col-lg-6 mb-4">
             <div class="card shadow-lg border-light">
                 <div class="card-header bg-info text-white">
                     <h5 class="mb-0">Subscription Growth</h5>
@@ -152,7 +138,6 @@
     let monthlyEventAttendanceChart;
     let eventsByCategoryChart;
     let userRegistrationsLocationChart;
-    let userEngagementChart;
     let topAttendeesChart;
     let subscriptionGrowthChart;
 
@@ -322,7 +307,15 @@
                     legend: {
                         labels: { color: '#333' }
                     }
+                },
+                onClick: function(evt, activeElements) {
+                if (activeElements.length > 0) {
+                    var clickedIndex = activeElements[0].index;
+                    var month = (clickedIndex + 1).toString().padStart(2, '0');
+                    var monthName = @json($monthNames)[clickedIndex];
+                    fetchUsersForAttendanceMonth(month, monthName);
                 }
+            }
             }
         });
     }
@@ -387,36 +380,7 @@
         });
     }
 
-    // User Engagement Over Time Chart
-    function createUserEngagementChart() {
-        const ctx = document.getElementById('userEngagementChart').getContext('2d');
-        userEngagementChart = new Chart(ctx, {
-            type: 'line',
-            data: {
-                labels: @json($engagementMonths),
-                datasets: [{
-                    label: 'Engagement Metrics',
-                    data: @json($engagementCounts),
-                    backgroundColor: 'rgba(255, 206, 86, 0.2)',
-                    borderColor: 'rgba(255, 206, 86, 1)',
-                    borderWidth: 2,
-                    fill: true
-                }]
-            },
-            options: {
-                responsive: true,
-                scales: {
-                    x: { ticks: { color: '#333' } },
-                    y: { beginAtZero: true, ticks: { color: '#333' } }
-                },
-                plugins: {
-                    legend: {
-                        labels: { color: '#333' }
-                    }
-                }
-            }
-        });
-    }
+    
 
     // Top Attendees Chart
     function createTopAttendeesChart() {
@@ -509,6 +473,26 @@ function createSubscriptionGrowthChart() {
         $('#userListModal').modal('show'); // Show the modal
     }
 
+    // Show users for the selected month
+function fetchUsersForAttendanceMonth(month, monthName) {
+    const usersForMonth = @json($usersPerMonth); // Ensure this is defined in your controller
+
+    if (usersForMonth[month] && usersForMonth[month].length > 0) {
+        $('#userList').empty(); // Clear previous list
+        $('#modalEventName').text(`Users Registered in ${monthName}`); // Set the month name in the modal
+        
+        // Loop through the users and append to the list
+        usersForMonth[month].forEach(user => {
+            $('#userList').append(`<li class="list-group-item"><a href="/admin/users/${user.id}">${user.name} (${user.email})</a></li>`);
+        });
+    } else {
+        $('#userList').empty().append('<li class="list-group-item">No users registered in this month.</li>');
+    }
+
+    // Show the modal
+    $('#userListModal').modal('show');
+}
+
     // Create the charts on page load
     createUserRegistrationsChart();
     createTopEventsChart();
@@ -516,7 +500,6 @@ function createSubscriptionGrowthChart() {
     createMonthlyEventAttendanceChart();
     createEventsByCategoryChart();
     createUserRegistrationsLocationChart();
-    createUserEngagementChart();
     createTopAttendeesChart();
     createSubscriptionGrowthChart();
 </script>

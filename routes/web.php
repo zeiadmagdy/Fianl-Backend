@@ -18,6 +18,7 @@ use App\Mail\RegistrationSuccessMail;
 use App\Models\User;
 use App\Http\Controllers\Payment\CreditController;
 use App\Http\Controllers\Admin\ImageCreationController;
+use App\Http\Controllers\InsightsController;
 
 
 /*
@@ -45,6 +46,9 @@ Route::middleware('admin')->prefix('admin')->name('admin.')->group(function () {
 
     // Dashboard route
     Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
+
+    // Insights route
+    Route::get('insights', [InsightsController::class, 'index'])->name('insights');
 
     // Calendar route
     Route::get('/calendar', [CalendarController::class, 'index'])->name('calendar.index');
